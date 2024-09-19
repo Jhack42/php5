@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const page = button.getAttribute('data-page');
 
             // Hacer la solicitud para obtener el contenido con la ruta completa
-            fetch(`/proyecto_gestion/app/Views/${page}.php`)
+            fetch(`/php5/app/Views/${page}.php`)
                 .then(response => response.text())
                 .then(data => {
                     // Cargar el contenido en el contenedor

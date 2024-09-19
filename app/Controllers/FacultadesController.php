@@ -1,27 +1,33 @@
 <?php
-require_once __DIR__ . '/../Models/Facultades.php';
+namespace App\Controllers;
+
+use App\Database\Database;
 
 class FacultadesController {
+    private $db;
+
+    public function __construct() {
+        $this->db = new Database();
+    }
 
     public function index() {
-        $facultades = new Facultades();
-        $listaFacultades = $facultades->getAllFacultades();
-        
-        // Pasar los datos a la vista
-        require_once __DIR__ . '/../Views/facultades.php';
+        $conexion = $this->db->getConnection();
+        $resultado = $conexion->query('SELECT * FROM facultades');
+
+        if (!$resultado) {
+            echo "Error al ejecutar la consulta: " . $conexion->error;
+            return;
+        }
+
+        while ($fila = $resultado->fetch_assoc()) {
+            echo "<p>Facultad: " . htmlentities($fila['nombre'], ENT_QUOTES, 'UTF-8') . "</p>";
+        }
+
+        $resultado->free();
+        $this->db->close();
     }
 
     public function store() {
-        $facultades = new Facultades();
-        
-        // Obtener el nombre de la facultad desde un formulario POST
-        $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : null; // Reemplazamos ?? con isset()
-
-        if ($nombre) {
-            $facultades->addFacultad($nombre);
-            header("Location: /facultades"); // Redirigir de vuelta a la lista de facultades
-        } else {
-            echo "Error: No se proporcionó el nombre de la facultad.";
-        }
+        // Implementar lógica para almacenar facultades
     }
 }

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="utf-8" />
-    <title>Prueba de conexión a Oracle</title>
+    <title>Prueba de conexión a MySQL</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,44 +32,37 @@
 
     try {
         // Datos de conexión
-        $usuario = "php5";
-        $contrasena = "tu_contraseña"; // Reemplaza con tu contraseña real
-        $conexion_string = "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XEPDB1)))";
+        $usuario = "root"; // Reemplaza con tu usuario de MySQL
+        $contrasena = "";  // Reemplaza con tu contraseña real
+        $base_datos = "php5"; // Reemplaza con el nombre de tu base de datos
+        $host = "127.0.0.1"; // Localhost (o la IP de tu servidor)
+        $puerto = 3306; // Puerto predeterminado de MySQL
 
         // Intentar establecer la conexión con manejo de errores
-        $conexion = oci_connect($usuario, $contrasena, $conexion_string);
+        $conexion = new mysqli($host, $usuario, $contrasena, $base_datos, $puerto);
 
-        if (!$conexion) {
-            $e = oci_error();
-            throw new Exception("No se pudo establecer la conexión a Oracle: " . htmlentities($e['message'], ENT_QUOTES, 'UTF-8'));
+        if ($conexion->connect_error) {
+            throw new Exception("No se pudo establecer la conexión a MySQL: " . $conexion->connect_error);
         }
 
-        echo "<div class='mensaje exito'>¡Conexión exitosa a Oracle!</div>";
+        echo "<div class='mensaje exito'>¡Conexión exitosa a MySQL!</div>";
 
         // Realizar una consulta de prueba
-        $stid = oci_parse($conexion, 'SELECT * FROM v$version');
-        if (!$stid) {
-            $e = oci_error($conexion);
-            throw new Exception("Error al preparar la consulta: " . htmlentities($e['message'], ENT_QUOTES, 'UTF-8'));
-        }
+        $resultado = $conexion->query('SELECT VERSION()');
 
-        // Ejecutar la consulta
-        $r = oci_execute($stid);
-        if (!$r) {
-            $e = oci_error($stid);
-            throw new Exception("Error al ejecutar la consulta: " . htmlentities($e['message'], ENT_QUOTES, 'UTF-8'));
+        if (!$resultado) {
+            throw new Exception("Error al ejecutar la consulta: " . $conexion->error);
         }
 
         // Mostrar resultados
-        while (($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) != false) {
-            echo "<p>Versión de Oracle: " . htmlentities($row['BANNER'], ENT_QUOTES, 'UTF-8') . "</p>";
-        }
+        $fila = $resultado->fetch_assoc();
+        echo "<p>Versión de MySQL: " . htmlentities($fila['VERSION()'], ENT_QUOTES, 'UTF-8') . "</p>";
 
-        // Liberar el statement
-        oci_free_statement($stid);
+        // Liberar el resultado
+        $resultado->free();
 
         // Cerrar la conexión
-        oci_close($conexion);
+        $conexion->close();
 
     } catch (Exception $e) {
         // Mostrar error personalizado
