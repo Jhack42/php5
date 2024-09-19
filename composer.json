@@ -1,0 +1,16 @@
+{
+    "name": "soporte/proyecto_gestion",
+    "type": "project",
+"autoload": {
+    "psr-4": {
+        "App\\": "app/"
+    }
+    },
+    "authors": [
+        {
+            "name": "ojCardenas",
+            "email": "juanrayme09@gmail.com"
+        }
+    ],
+    "require": {}
+}
