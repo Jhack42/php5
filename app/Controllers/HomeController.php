@@ -6,7 +6,7 @@ class HomeController {
 
     // Página principal
     public function index() {
-        require_once 'app/Views/home.php';
+        echo "Bienvenido a la página de inicio";
     }
 
     // Página "Acerca de"

@@ -1,6 +1,5 @@
 <?php
 
-// Cargar las variables de entorno manualmente desde el archivo .env
 function loadEnv($path)
 {
     if (!file_exists($path)) {
@@ -10,61 +9,38 @@ function loadEnv($path)
     $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
         if (strpos(trim($line), '#') === 0) {
-            continue; // Ignorar comentarios
+            continue;
         }
 
         list($name, $value) = explode('=', $line, 2);
         $name = trim($name);
         $value = trim($value);
-
-        // Quitar comillas si están presentes
-        $value = str_replace(array('"', "'"), '', $value);
-
-        // Definir la variable de entorno
-        putenv("$name=$value");
+        
+        if (!empty($value)) {
+            putenv(sprintf('%s=%s', $name, $value));
+            $_ENV[$name] = $value;
+            $_SERVER[$name] = $value;
+        }
     }
 
     return true;
 }
 
-// Cargar las variables de entorno
-loadEnv(__DIR__ . '/../.env');
+$envFile = dirname(__FILE__) . '/../.env';
+loadEnv($envFile);
 
-// Prueba de conexión
-$conn = getConnection();
-if ($conn) {
-    echo "Conexión exitosa a Oracle";
-    oci_close($conn);
-} else {
-    echo "Error en la conexión a Oracle";
-}
-
-// Función para conectarse a la base de datos Oracle usando oci_connect
 function getConnection() {
-    $host = getenv('DB_HOST');
-    $port = getenv('DB_PORT');
-    $service_name = getenv('DB_SERVICE_NAME');
-    $username = getenv('DB_USERNAME');
-    $password = getenv('DB_PASSWORD');
+    $host = getenv('DB_HOST') ?: '127.0.0.1';
+    $port = getenv('DB_PORT') ?: '3306';
+    $database = getenv('DB_DATABASE') ?: 'php5';
+    $username = getenv('DB_USERNAME') ?: 'root';
+    $password = getenv('DB_PASSWORD') ?: '';
 
-    // Construir la cadena de conexión TNS
-    $tns = "(DESCRIPTION =
-        (ADDRESS = (PROTOCOL = TCP)(HOST = $host)(PORT = $port))
-        (CONNECT_DATA =
-          (SERVER = DEDICATED)
-          (SERVICE_NAME = $service_name)
-        )
-    )";
-
-    // Conectar a Oracle
-    $conn = oci_connect($username, $password, $tns);
+    $conn = mysqli_connect($host, $username, $password, $database, (int)$port);
 
     if (!$conn) {
-        $e = oci_error();
-        echo "Error al conectarse a la base de datos Oracle: " . $e['message'];
-        exit;
+        die("Error de conexión: " . mysqli_connect_error() . " - Host: $host, Usuario: $username, Puerto: $port");
     }
 
     return $conn;
 }
-?>

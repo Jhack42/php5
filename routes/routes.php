@@ -1,32 +1,30 @@
 <?php
+require_once __DIR__ . '/../config/database.php';
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use App\Controllers\HomeController;
-use App\Controllers\FacultadesController;
-use App\Controllers\APIController;
-
-$routes = [
-    '/' => 'HomeController@index',
-    '/about' => 'HomeController@about',
-    '/contact' => 'HomeController@contact',
-    '/facultades' => 'FacultadesController@index',
-    '/facultades/add' => 'FacultadesController@store',
-    '/api/facultades' => 'APIController@getFacultadesJson',
-];
-
-function handleRoute($routes) {
+function handleRoutes() {
+    // Obtener la ruta solicitada
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-    if (array_key_exists($uri, $routes)) {
-        list($controller, $method) = explode('@', $routes[$uri]);
+    // Normalizar la ruta
+    $uri = rtrim($uri, '/'); // Eliminar barra final si existe
+    $uri = $uri === '' || $uri === '/public/index.php' ? '/' : $uri; // Si es vacío o es '/public/index.php', considerarlo como '/'
 
-        $controller = "App\\Controllers\\$controller";
-        $controllerInstance = new $controller();
-        call_user_func([$controllerInstance, $method]);
+    // Definir rutas
+    $routes = [
+        '/' => __DIR__ . 'C:\xampp\htdocs\php5\app\Views\casa.php', // Página por defecto
+        '/about' => __DIR__ . '/../app/Views/about.php',
+        '/contact' => __DIR__ . '/../app/Views/contact.php',
+    ];
+
+    // Verificar si la ruta existe
+    if (array_key_exists($uri, $routes)) {
+        $filePath = $routes[$uri];
+        if (file_exists($filePath)) {
+            require_once $filePath;
+        } else {
+            echo "Error: El archivo solicitado no existe.";
+        }
     } else {
-        echo "Error 404: Página no encontrada.";
+        require_once __DIR__ . '/../app/Views/error/404.php'; // Página 404 si la ruta no existe
     }
 }
-
-handleRoute($routes);
