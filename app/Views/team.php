@@ -1,120 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menú Desplegable Universidad</title>
-  <style>
-    /* Estilos generales */
-    body {
-      font-family: Arial, sans-serif;
-    }
-
-    /* Botón principal */
-    .dropdown-universidad-btn {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #8B0202;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      display: inline-block;
-    }
-
-    /* Contenedor del menú desplegable */
-    .dropdown-universidad {
-      position: relative;
-      display: inline-block;
-    }
-
-    /* Menú desplegable oculto */
-    .dropdown-universidad-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      border-radius: 5px;
-      z-index: 1;
-      min-width: 200px;
-    }
-
-    /* Opciones de la primera columna */
-    .dropdown-universidad .category {
-      display: flex;
-    }
-
-    .dropdown-universidad-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      margin-right: 30px;
-    }
-
-    .dropdown-universidad-list li {
-      margin: 10px 0;
-      cursor: pointer;
-    }
-
-    /* Submenú */
-    .sub-category-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .sub-category-list li {
-      margin: 5px 0;
-    }
-
-    /* Mostrar el menú al hacer clic */
-    .show {
-      display: block;
-    }
-  </style>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías</title>
+    <link rel="stylesheet" href="/php5/public/css/team.css">
+    </head>
 <body>
 
-  <!-- Menú desplegable -->
-  <div class="dropdown-universidad">
-    <button class="dropdown-universidad-btn">Categorías Universidad</button>
-    <div class="dropdown-universidad-content">
-      <div class="category">
-        <!-- Primera columna -->
-        <ul class="dropdown-universidad-list">
-          <li>Facultades</li>
-          <li>Servicios</li>
-          <li>Administración</li>
-          <li>Vida Estudiantil</li>
-        </ul>
-
-        <!-- Segunda columna -->
-        <ul class="sub-category-list">
-          <li>Ingeniería</li>
-          <li>Medicina</li>
-          <li>Ciencias Sociales</li>
-          <li>Artes</li>
-        </ul>
-      </div>
+<div class="team-container">
+    <h1>Equipo</h1>
+    <div class="team-category-grid">
+        <div class="team-category-card">
+            <img src="dispositivos-moviles.png" alt="Dispositivos Móviles">
+            <h2>Equipo</h2>
+            <ul>
+                <li>Teléfonos Móviles</li>
+                <li>Tablets</li>
+                <li>E-Readers</li>
+            </ul>
+        </div>
+        <div class="team-category-card">
+            <img src="componentes-informaticos.png" alt="Componentes Informáticos">
+            <h2>Componentes Informáticos</h2>
+            <ul>
+                <li>Tarjetas Gráficas</li>
+                <li>Procesadores</li>
+                <li>Discos Duros SSD</li>
+            </ul>
+        </div>
+        <div class="team-category-card">
+            <img src="aplicaciones-software.png" alt="Aplicaciones y Software">
+            <h2>Aplicaciones y Software</h2>
+            <ul>
+                <li>Aplicaciones De Mensajería</li>
+                <li>Aplicaciones De Salud</li>
+                <li>Frameworks MV</li>
+            </ul>
+        </div>
+        <!-- Añadir más categorías aquí -->
     </div>
-  </div>
-
-  <!-- Script para controlar el comportamiento del menú -->
-  <script>
-    var menuBtn = document.querySelector('.dropdown-universidad-btn');
-    var dropdownContent = document.querySelector('.dropdown-universidad-content');
-
-    menuBtn.addEventListener('click', function () {
-      dropdownContent.classList.toggle('show');
-    });
-
-    window.addEventListener('click', function (e) {
-      if (!menuBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
-        dropdownContent.classList.remove('show');
-      }
-    });
-  </script>
+</div>
 
 </body>
 </html>
