@@ -11,10 +11,10 @@
     }
 
     /* Botón principal */
-    .menu-btn {
+    .dropdown-universidad-btn {
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #8B0202; /* Color del botón */
+      background-color: #8B0202;
       color: #fff;
       border: none;
       cursor: pointer;
@@ -23,13 +23,13 @@
     }
 
     /* Contenedor del menú desplegable */
-    .dropdown {
+    .dropdown-universidad {
       position: relative;
       display: inline-block;
     }
 
     /* Menú desplegable oculto */
-    .dropdown-content {
+    .dropdown-universidad-content {
       display: none;
       position: absolute;
       background-color: #f9f9f9;
@@ -40,24 +40,24 @@
       min-width: 200px;
     }
 
-    /* Opciones de la primera columna (Categorías principales) */
-    .dropdown-content .category {
+    /* Opciones de la primera columna */
+    .dropdown-universidad .category {
       display: flex;
     }
 
-    .category-list {
+    .dropdown-universidad-list {
       margin: 0;
       padding: 0;
       list-style: none;
       margin-right: 30px;
     }
 
-    .category-list li {
+    .dropdown-universidad-list li {
       margin: 10px 0;
       cursor: pointer;
     }
 
-    /* Submenú (opciones internas de cada categoría) */
+    /* Submenú */
     .sub-category-list {
       list-style: none;
       margin: 0;
@@ -77,19 +77,19 @@
 <body>
 
   <!-- Menú desplegable -->
-  <div class="dropdown">
-    <button class="menu-btn">Categorías Universidad</button>
-    <div class="dropdown-content">
+  <div class="dropdown-universidad">
+    <button class="dropdown-universidad-btn">Categorías Universidad</button>
+    <div class="dropdown-universidad-content">
       <div class="category">
-        <!-- Primera columna (Categorías principales) -->
-        <ul class="category-list">
+        <!-- Primera columna -->
+        <ul class="dropdown-universidad-list">
           <li>Facultades</li>
           <li>Servicios</li>
           <li>Administración</li>
           <li>Vida Estudiantil</li>
         </ul>
 
-        <!-- Segunda columna (Subcategorías) -->
+        <!-- Segunda columna -->
         <ul class="sub-category-list">
           <li>Ingeniería</li>
           <li>Medicina</li>
@@ -100,18 +100,15 @@
     </div>
   </div>
 
-  <!-- Script para controlar el comportamiento del menú desplegable -->
+  <!-- Script para controlar el comportamiento del menú -->
   <script>
-    // Seleccionamos el botón del menú
-    var menuBtn = document.querySelector('.menu-btn');
-    var dropdownContent = document.querySelector('.dropdown-content');
+    var menuBtn = document.querySelector('.dropdown-universidad-btn');
+    var dropdownContent = document.querySelector('.dropdown-universidad-content');
 
-    // Al hacer clic, alternamos la clase 'show' para mostrar/ocultar el menú
     menuBtn.addEventListener('click', function () {
       dropdownContent.classList.toggle('show');
     });
 
-    // Cerrar el menú si se hace clic fuera de él
     window.addEventListener('click', function (e) {
       if (!menuBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
         dropdownContent.classList.remove('show');
