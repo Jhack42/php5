@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const { connect } = require('./config/db');
 const routes = require('./routes'); // Importa todas las rutas desde el archivo index.js
-const dbRoutes = require('./routes/dbRoutes'); // Importa las rutas de la base de datos
 
 const app = express();
 app.use(express.json());
