@@ -1,9 +1,17 @@
 /* Estilos generales */
 
 
+body {
+  font-family: Arial, sans-serif;
+  background-color: #E8CFA0;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
 .container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .row {
@@ -13,47 +21,48 @@
 
 /* Barra lateral */
 .sidebar {
-  background-color: #E8CFA0;
-  width: 16.6667%; /* Equivalente a col-2 */
+  background-color: #939598;
+  width: 250px;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  padding: 20px;
   box-sizing: border-box; /* Para incluir padding en el ancho */
 }
 
 .nav {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
   margin: 0;
   flex-grow: 1;
 }
 
 .nav-item {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .nav-link {
-  display: block;
-  padding: 12px 15px;
+  color: #333;
   text-decoration: none;
-  color: #8B0202;
-  font-size: 14px;
-  border: 2px solid transparent;
+  display: block;
+  padding: 10px;
   border-radius: 5px;
+  transition: background-color 0.3s;
+  border: 2px solid transparent;
   background-color: transparent;
-  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .nav-link:hover, 
 .nav-link.active {
   background-color: #8B0202;
-  color: #FFFFFF;
+  color: #fff;
   border-color: #8B0202;
 }
 
 /* Submenús */
 .collapse {
   display: none;
+  padding-left: 20px;
 }
 
 .nav-link[aria-expanded="true"] + .collapse {
@@ -69,7 +78,7 @@
 .content {
   flex-grow: 1;
   padding: 20px;
-  background-color: #FFFFFF;
+  background-color: #fff;
   box-sizing: border-box;
 }
 
@@ -90,8 +99,12 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
   .sidebar {
-    width: 60px;
+    width: 100%;
   }
 
   .nav-link {
@@ -135,44 +148,33 @@
   display: block;
 }
 /* Estilos para los botones */
-.button {
+.button, .button-secondary {
   display: inline-block;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  text-decoration: none;
   font-weight: bold;
-  text-transform: uppercase;
-  color: #FFFFFF;
-  background-color: #8B0202; /* Color principal del botón */
-  border: 2px solid #8B0202; /* Borde del mismo color que el fondo */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
 }
 
-.button:hover {
-  background-color: #E8CFA0; /* Cambia el fondo al color #E8CFA0 en hover */
-  color: #8B0202; /* Cambia el texto al color del botón original */
-  border-color: #E8CFA0; /* Cambia el borde también */
-  transform: translateY(-2px); /* Pequeño efecto de elevar el botón */
+.button {
+  background-color: #8B0202;
+  color: #fff;
 }
 
-.button:active {
-  background-color: #8B0202; /* Color al hacer clic */
-  color: #FFFFFF; /* Texto al hacer clic */
-  transform: translateY(0); /* Vuelve a su lugar cuando está presionado */
+.button:hover, .button:focus {
+  background-color: #660101;
 }
 
 .button-secondary {
-  background-color: #939598; /* Botón secundario con color neutro */
-  color: #FFFFFF;
-  border: 2px solid #939598;
+  background-color: #939598;
+  color: #fff;
 }
 
-.button-secondary:hover {
-  background-color: #8B0202;
-  color: #FFFFFF;
-  border-color: #8B0202;
+.button-secondary:hover, .button-secondary:focus {
+  background-color: #7a7c7f;
 }
 
 /* Adaptaciones para dispositivos móviles */
