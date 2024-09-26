@@ -1,6 +1,34 @@
 
 # Git Commands Cheat Sheet
 
+
+Para subir los cambios de tu rama rama1-jhack a un repositorio remoto en Git, sigue estos pasos:
+
+Asegúrate de que estás en la rama correcta:
+```bash
+git checkout rama1-jhack
+```
+Añade los cambios al área de preparación:
+```bash
+git add .
+```
+Esto añadirá todos los archivos modificados. Si solo quieres añadir archivos específicos, puedes reemplazar el . con el nombre del archivo.
+
+
+Confirma los cambios (commitea):
+```bash
+git commit -m "Descripción de los cambios realizados"
+```
+Sube la rama al repositorio remoto:
+```bash
+git push origin rama1-jhack
+```
+## 2. Actualiza tu rama local con los últimos cambios:
+Una vez que estás en tu rama, ejecuta el siguiente comando para traer los cambios más recientes del repositorio remoto:
+```bash
+git pull origin rama1-jhack
+```
+
 ## 1. Cambiar a una rama específica
 
 Para cambiar a una rama en Git:
