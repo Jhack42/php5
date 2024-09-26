@@ -100,7 +100,7 @@
 <?php
 // Función para obtener los datos de la API
 function obtenerDatosFacultades() {
-    $url = 'http://localhost:3000/api/vista-facultades-eventos';
+    $url = 'https://c4dd-181-176-49-31.ngrok-free.app/api/vista-facultades-eventos';
     $opciones = array(
         'http' => array(
             'method' => 'GET',
