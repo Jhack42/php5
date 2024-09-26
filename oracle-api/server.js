@@ -16,22 +16,18 @@ const dbConfig = {
   connectString: process.env.DB_CONNECTIONSTRING,
 };
 
-// Ruta de ejemplo para consultar datos desde Oracle
-app.get('/data', async (req, res) => {
+// Ruta para verificar la conexión a Oracle
+app.get('/check-connection', async (req, res) => {
   let connection;
 
   try {
     connection = await oracledb.getConnection(dbConfig);
 
-    const result = await connection.execute(
-      `SELECT * FROM your_table`,  // Reemplaza "your_table" con tu tabla
-      []  // Si necesitas parámetros, colócalos aquí
-    );
-
-    res.json(result.rows); // Devuelve los datos en formato JSON
+    // Si la conexión es exitosa, devolver un mensaje
+    res.json({ message: 'Conexión exitosa a Oracle' });
   } catch (err) {
-    console.error('Error al ejecutar la consulta:', err);
-    res.status(500).send('Error al ejecutar la consulta en Oracle');
+    console.error('Error al conectarse a Oracle:', err);
+    res.status(500).send('Error al conectarse a Oracle');
   } finally {
     if (connection) {
       try {
