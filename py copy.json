@@ -1,0 +1,17 @@
+{
+    "version": "Luna",
+    "proyecto": {
+        "menu": {
+            "inicio": {
+                "tipo": ["Ingeniería de Software", "Ingeniería Civil"]
+            }
+        }
+    },
+    "proyecsto": {
+        "menu": {
+            "inicio": {
+                "tipo": ["Ingeniería de Software", "Ingeniería Civil"]
+            }
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "version": "Luna",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "start",
+            "isBackground": true
+        }, "sdasda", "dadsadasd"
+    ],
+    "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+            "activeOnStart": true,
+            "beginsPattern": {
+                "regexp": "(.*?)"
+            },
+            "endsPattern": {
+                "regexp": "bundle generation complete"
+            }
+        },
+        "problemMatcheh": true
+    }
+}
