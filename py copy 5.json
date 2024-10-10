@@ -1,0 +1,30 @@
+{
+    "version": "Luna",
+    "name": "inicio",
+    "contenido": [
+        {
+            "dimeciones" : "aqui quiero poner algnos datos para desir donde va a estar uvicado y como va a estar uvicado del div",
+            "css" : "aqui puedo poner algunos diseños de css para añadir diseño al div contenedor o si quiero reutilisar siseño simplemente congo un /api/css/(el css espesifoc que quiero eredar)",
+            "tipo": "boton para cambiar a la vista calendar",
+            "bublioteca-diseño" : "aqui puedo llamar a un boton que ya tiene diseño previamente (como aria eso? talbes en un archivo pondo todos tipo de botones con diseños predeterminados para que eso carge dentro de del div que esta) pondria algo asi como (boton-(tipo de boton)-1(tipo de estilo)) y me cargaria su diseño pero sin contenido osea el texto ni la logica de que va a cargar",
+            "name": "contenido",
+            "href": "/api/contenido/"
+        },
+        {
+            "dimeciones" : "aqui quiero poner algnos datos para desir donde va a estar uvicado y como va a estar uvicado del div",
+            "css" : "aqui puedo poner algunos diseños de css para añadir diseño al div contenedor o si quiero reutilisar siseño simplemente congo un /api/css/(el css espesifoc que quiero eredar)",
+            "tipo": "boton para cambiar a la vista calendar",
+            "bublioteca-diseño" : "aqui puedo llamar a un Card An all-around flexible and composable component que ya tiene diseño previamente (como aria eso? talbes en un archivo pondo todos tipo de Cards con diseños predeterminados para que eso carge dentro de del div que esta) pondria algo asi como (Card-(tipo de Card)-1(tipo de estilo)) y me cargaria su diseño pero sin contenido osea el texto ni la logica de que va a cargar",
+            "name" : "Calendario",
+            "href": "/vista/calendario/"
+        },
+        {
+            "dimeciones" : "aqui quiero poner algnos datos para desir donde va a estar uvicado y como va a estar uvicado del div",
+            "css" : "aqui puedo poner algunos diseños de css para añadir diseño al div contenedor o si quiero reutilisar siseño simplemente congo un /api/css/(el css espesifoc que quiero eredar)",
+            "tipo" : "dropdown menu",
+            "bublioteca-diseño" : "aqui puedo llamar a un boton que ya tiene diseño previamente (como aria eso? talbes en un archivo pondo todos tipo de botones con diseños predeterminados para que eso carge dentro de del div que esta) pondria algo asi como (boton-(tipo de boton dropdown menu)-1(tipo de estilo)) y me cargaria su diseño pero sin contenido osea el texto ni la logica de que va a cargar",
+            "name" : "Categoria",
+            "href": "/api/ctegoria/"
+        }
+    ]
+}

@@ -1,0 +1,56 @@
+{
+    "version": "Luna",
+    "name": "inicio",
+    "contenido": [
+        {
+            "name": "facultades",
+            "href": "/api/facultades/",
+            "facultades": [
+                {
+                    "name-abreviatura": "FAUA",
+                    "name":"Arquitectura, Urbanismo y Artes",
+                    "href": "/api/facultades/faua"
+                },
+                {
+                    "name-abreviatura": "FIC",
+                    "name":"Ingeniería Civil",
+                    "href": "/api/facultades/fic"
+                },
+                {
+                    "name-abreviatura": "FIGMM",
+                    "name":"Ingeniería Geologica, minera y metalúrgica",
+                    "href": "/api/facultades/figmm"
+                },
+                {
+                    "name-abreviatura": "FC",
+                    "name":"Ciencias",
+                    "href": "/api/facultades/fc"
+                },
+                {
+                    "name-abreviatura": "FIEECS",
+                    "name":"Ingeniería Economica, Estadistica y Ciencias Sociales",
+                    "href": "/api/facultades/fieecs"
+                },
+                {
+                    "name-abreviatura": "FIIS",
+                    "name":"Ingeniería Industrial y de Sistemas",
+                    "href": "/api/facultades/fiis"
+                },
+                {
+                    "name-abreviatura": "FIA",
+                    "name":"Ingeniería Ambiental",
+                    "href": "/api/facultades/fia"
+                },
+                {
+                    "name-abreviatura": "FIEE",
+                    "name":"Ingeniería Electrica y Electronica",
+                    "href": "/api/facultades/fiee"
+                }
+                
+            ]
+        },
+        {
+            "tipo": "otro"
+        }
+    ]
+}

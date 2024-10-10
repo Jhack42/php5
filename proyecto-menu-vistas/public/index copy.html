@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructor Visual</title>
+    <link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
+</head>
+<body>
+    <div id="gjs"></div>
+    <script src="https://unpkg.com/grapesjs"></script>
+    <script type="text/javascript">
+        const editor = grapesjs.init({
+            container: '#gjs',
+            fromElement: true,
+            height: '100%',
+            width: 'auto',
+            storageManager: false,
+        });
+
+        // Enviar la estructura creada a la API de Node.js
+        async function guardarProyecto() {
+          const proyecto = editor.getComponents();
+          const componentes = proyecto.map(componente => {
+            return {
+              tipo: componente.get('tagName'),
+              contenido: componente.toHTML(),
+              dimensiones: componente.getStyle()
+            };
+          });
+
+          const response = await fetch('/api/guardar-proyecto', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              nombre: 'Nuevo Proyecto',
+              carpeta_referencia: 'proyecto-nuevo',
+              componentes
+            })
+          });
+
+          const data = await response.text();
+          console.log(data);
+        }
+
+        // Llamar la función para guardar el proyecto
+        guardarProyecto();
+    </script>
+</body>
+</html>
