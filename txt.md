@@ -28,8 +28,12 @@ Una vez que estás en tu rama, ejecuta el siguiente comando para traer los cambi
 ```bash
 git pull origin rama1-jhack
 ```
-
-## 1. Cambiar a una rama específica
+## Haz un pull para integrar los cambios remotos:
+Esto traerá los cambios del repositorio remoto y aplicará los cambios locales encima de ellos (si es que no hay conflictos).
+```bash
+git pull origin rama1-jhack --rebase
+```
+## a. Cambiar a una rama específica
 
 Para cambiar a una rama en Git:
 
