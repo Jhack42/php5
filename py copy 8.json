@@ -68,13 +68,25 @@ ejemplo de /api/especialidad/
 {
     "id": 1,
     "name-completo": "espesialidad1",
-    "actividades": "/api/actividades"
+    "actividades": "/api/actividades/"
 },
 {
     "id": 2,
     "name-completo": "espesialidad2",
-    "actividades": "/api/actividades"
+    "actividades": "/api/actividades/"
 }
 
 
-ahora qui estan los datos que quiero que se muestre en este caso el de 
+ahora qui estan los datos que quiero que se muestre en este caso el de /api/actividades/
+
+{
+    "id": 1,
+    "general": "(marcar si o no)",
+    "2facultad": "id(poner o no poner seria algo asi como marcar si llego a poner eso es )",
+    "2general": "(marcar si o no)",
+    "espesialidad": "id",
+    "3general": "(marcar si o no)",
+    "name-completo": "id",
+    "PERIODO": "20242",
+    "actividades": "/api/actividades/"
+}
