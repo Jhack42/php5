@@ -1,0 +1,80 @@
+{
+    "name": "facultades",
+    "actividades": "/api/actividades/facultades/",
+    "href": "/api/facultades/"
+}
+
+
+/api/facultades/
+{
+    "id": 1,
+    "name-abreviatura": "FAUA",
+    "name-completo": "Arquitectura, Urbanismo y Artes",
+    "actividades": "/api/actividades/FAUA/",
+    "href": "/api/especialidad/FAUA/"
+},
+{
+    "id": 2,
+    "name-abreviatura": "FIC",
+    "name-completo": "Ingeniería Civil",
+    "actividades": "/api/actividades/FIC/",
+    "href": "/api/especialidad/FIC/"
+},
+{
+    "id": 3,
+    "name-abreviatura": "FIGMM",
+    "name-completo": "Ingeniería Geologica, minera y metalúrgica",
+    "actividades": "/api/actividades/FIGMM/",
+    "href": "/api/especialidad/FIGMM/"
+},
+{
+    "id": 4,
+    "name-abreviatura": "FC",
+    "name-completo": "Ciencias",
+    "actividades": "/api/actividades/FC/",
+    "href": "/api/especialidad/FC/"
+},
+{
+    "id": 5,
+    "name-abreviatura": "FIEECS",
+    "name-completo": "Ingeniería Economica, Estadistica y Ciencias Sociales",
+    "actividades": "/api/actividades/FIEECS/",
+    "href": "/api/especialidad/FIEECS/"
+},
+{
+    "id": 6,
+    "name-abreviatura": "FIIS",
+    "name-completo": "Ingeniería Industrial y de Sistemas",
+    "actividades": "/api/actividades/FIIS/",
+    "href": "/api/especialidad/FIIS/"
+},
+{
+    "id": 7,
+    "name-abreviatura": "FIA",
+    "name-completo": "Ingeniería Ambiental",
+    "actividades": "/api/actividades/FIA/",
+    "href": "/api/especialidad/FIA/"
+},
+{
+    "id": 8,
+    "name-abreviatura": "FIEE",
+    "name-completo": "Ingeniería Electrica y Electronica",
+    "actividades": "/api/actividades/FIEE/",
+    "href": "/api/especialidad/FIEE/"
+}
+
+
+ejemplo de /api/especialidad/
+{
+    "id": 1,
+    "name-completo": "espesialidad1",
+    "actividades": "/api/actividades"
+},
+{
+    "id": 2,
+    "name-completo": "espesialidad2",
+    "actividades": "/api/actividades"
+}
+
+
+ahora qui estan los datos que quiero que se muestre en este caso el de 

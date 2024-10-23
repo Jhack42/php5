@@ -1,0 +1,125 @@
+{
+  "name": "nombre que de a  entender que estamos dentro de  un grupo de facultades",
+  "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ],
+  "facultades": [
+    {
+      "name": "facultad 1",
+      "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ],
+      "carpeta": [
+        {
+          "name": "especialidad0",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        },
+        {
+          "name": "especialidad1",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        },
+        {
+          "name": "especialidad1",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "facultad 1",
+      "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ],
+      "carpeta": [
+        {
+          "name": "especialidad0",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        },
+        {
+          "name": "especialidad1",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        },
+        {
+          "name": "especialidad1",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "facultad 1",
+      "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ],
+      "carpeta": [
+        {
+          "name": "especialidad0",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        },
+        {
+          "name": "especialidad1",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        },
+        {
+          "name": "especialidad1",
+          "evento": [
+            "evento0",
+            "evento1",
+            "evento2",
+            "evento3"
+          ]
+        }
+      ]
+    }
+  ]
+}
