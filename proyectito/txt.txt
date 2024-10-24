@@ -54,3 +54,8 @@ Success! Created proyectito at C:\xampp\htdocs\php5\proyectito
 
 soporte@DESKTOP-0PLUESG MINGW64 /c/xampp/htdocs/php5 (rama1-jhack)
 $
+
+
+npm install
+
+npm run dev

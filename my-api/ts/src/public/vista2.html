@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtros Académicos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <style>
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-category ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .filter-category li {
+            margin-bottom: 10px;
+        }
+
+        .filter-category {
+            margin-bottom: 20px;
+        }
+
+        .hero-body {
+            flex-grow: 1;
+            flex-shrink: 0;
+            padding: 0.5rem 0.5rem;
+            /* Cambiando el padding a 2rem en la parte superior/inferior y 1rem en los laterales */
+        }
+
+        .hero.is-danger {
+            background-color: #8B0202
+                /* Cambiar el color de fondo a rojo */
+        }
+
+        /*----------------------------------------------------------------------------------------*/
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            /* Alinea verticalmente */
+            gap: 10px;
+            /* Espaciado entre el checkbox y el texto */
+        }
+
+        /* Mantiene el estilo de tu checkbox personalizado */
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-custom {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            position: relative;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"]:checked+.checkbox-custom {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .checkbox-custom::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        input[type="checkbox"]:checked+.checkbox-custom::after {
+            opacity: 1;
+        }
+
+        /* Estilo adicional para el texto */
+        .checkbox-label {
+            font-size: 16px;
+            /* Tamaño de fuente para el texto */
+        }
+
+
+        /**/
+        /* Ocultar el checkbox original */
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        /* El contenedor del switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        /* Estilo de la "pista" del switch */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        /* El círculo del switch */
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        /* Cuando está activado */
+        input:checked+.slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Encabezado -->
+    <section class="hero is-danger">
+        <div class="hero-body">
+            <p class="title has-text-centered">
+                Filtros Académicos
+            </p>
+        </div>
+    </section>
+
+    <!-- Contenedor Principal -->
+    <div class="columns">
+        <!-- Sidebar con filtros -->
+        <aside class="column is-one-quarter">
+            <div class="box">
+                <h2 class="title is-5">Configuración Académica</h2>
+                <p id="resultados" class="subtitle is-6">Resultados (0)</p>
+
+                <!-- Barra de búsqueda -->
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Buscar...">
+                    </div>
+                </div>
+
+                <!-- Filtro Dinámico -->
+                <div id="dynamic-filters">
+                    <!-- Aquí se llenarán los filtros dinámicamente -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal con Tabla -->
+        <section class="content">
+            <div class="results-header">
+                <select name="mes" id="mes-select">
+                    <option value="tabla">Tabla</option>
+                    <option value="calendario">Calendario</option>
+                </select>
+            </div>
+
+            <!-- Tabla de resultados -->
+            <div class="container" id="aqui_se_va_a_contruir_la_tabla"></div>
+
+            <!-- Paginación -->
+            <div class="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">&raquo;</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let data = [];
+        let filters = {
+            universidad: false,
+            facultades: [],
+            especialidades: [],
+            periodo: '',
+            fechaInicio: '',
+            fechaFin: '',
+            medio: '',
+            responsable: '',
+            procesa: ''
+        };
+
+        async function loadFilters() {
+            try {
+                const response = await fetch('http://localhost:3000/api/data/filtro-checkbox#');
+                const filtersData = await response.json();
+                constructFilters(filtersData);
+            } catch (error) {
+                console.error('Error al cargar los filtros:', error);
+            }
+        }
+
+        function constructFilters(filtersData) {
+            const dynamicFilters = document.getElementById('dynamic-filters');
+            dynamicFilters.innerHTML = '';
+
+            filtersData.forEach(filter => {
+                const filterSection = document.createElement('div');
+                filterSection.classList.add('filter-section');
+
+                const filterTitle = document.createElement('h3');
+                filterTitle.classList.add('title', 'is-6');
+                filterTitle.textContent = filter.name;
+
+                const filterList = document.createElement('ul');
+                filterList.innerHTML = `
+                    <li><label><input type="checkbox" value="${filter.checkbox1}"> ${filter.checkbox1}</label></li>
+                    <li><label><input type="checkbox" value="${filter.checkbox2}"> ${filter.checkbox2}</label></li>
+                    <li><label><input type="checkbox" value="${filter.checkbox3}"> ${filter.checkbox3}</label></li>
+                `;
+
+                filterSection.appendChild(filterTitle);
+                filterSection.appendChild(filterList);
+                dynamicFilters.appendChild(filterSection);
+            });
+        }
+
+        async function loadTable() {
+            try {
+                // Llamadas a las APIs para obtener las columnas y los datos
+                const responseColumns = await fetch('http://localhost:3000/api/data/tablas');
+                const columnsData = await responseColumns.json();
+                const responseActivities = await fetch('http://localhost:3000/api/data/para-la-vita1');
+                const activitiesData = await responseActivities.json();
+                data = activitiesData; // Guardar los datos originales
+                updateTable(columnsData[0], data);
+                updateFilters(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function updateTable(columns, activities) {
+            const container = document.getElementById('aqui_se_va_a_contruir_la_tabla');
+            const filteredActivities = filterActivities(activities);
+
+            // Actualizar el número de resultados
+            document.getElementById('resultados').innerText = `Resultados (${filteredActivities.length})`;
+
+            // Crear la tabla
+            const table = document.createElement('table');
+            table.classList.add('results-table');
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            Object.keys(columns).forEach(col => {
+                if (col.startsWith('olumna')) {
+                    const th = document.createElement('th');
+                    th.textContent = columns[col];
+                    headerRow.appendChild(th);
+                }
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            filteredActivities.forEach(activity => {
+                const isChecked = activity.estado === 'A'; // 'A' es Activo, 'I' es Inactivo
+
+                // Verificar si el id de la actividad está correctamente definido
+                const idActividad = activity.id_actividad || 'Sin ID'; // Manejo de caso donde no haya ID
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+        <td>${activity.periodo}</td>
+        <td>${activity.codigo_actividad}</td>
+        <td>${activity.fullcalendar ? activity.fullcalendar.descripcion : 'Sin descripción'}</td>
+        <td>${activity.fullcalendar ? new Date(activity.fullcalendar.fecha_inicio).toLocaleDateString() : 'Sin fecha de inicio'}</td>
+        <td>${activity.fullcalendar ? new Date(activity.fullcalendar.fecha_fin).toLocaleDateString() : 'Sin fecha de fin'}</td>
+        <td>
+            <label class="switch">
+                <input type="checkbox" class="estado-switch" data-id="${idActividad}" ${isChecked ? 'checked' : ''}>
+                <span class="slider"></span>
+            </label>
+        </td>
+        <td>${activity.jerarquia.nivel}</td>
+        <td><button>Opciones</button></td>
+    `;
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(tbody);
+
+            container.innerHTML = '';
+            container.appendChild(table);
+
+            // Añadir evento para los switches
+            document.querySelectorAll('.estado-switch').forEach(function (switchElement) {
+                switchElement.addEventListener('change', async function () {
+                    const estado = this.checked ? 'A' : 'I';
+                    const id = this.getAttribute('data-id');
+
+                    try {
+                        // Llamada a la API para actualizar el estado en la base de datos
+                        const response = await fetch(`/api/actualizar-estado`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id, estado })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            // Mensaje de éxito
+                            console.log('Estado actualizado correctamente.');
+                            alert(`Estado de la actividad ID: ${id} actualizado a ${estado}`);
+                        } else {
+                            // Mensaje de error en caso de fallo
+                            console.error('Error al actualizar el estado:', data.message);
+                            alert(`Error al actualizar el estado de la actividad ID: ${id}`);
+                            // Revertir el checkbox al estado anterior
+                            this.checked = !this.checked;
+                        }
+                    } catch (error) {
+                        // Manejo del error
+                        console.error('Error en la petición:', error);
+                        alert(`No se pudo actualizar el estado de la actividad ID: ${id}`);
+                        // Revertir el checkbox al estado anterior en caso de error
+                        this.checked = !this.checked;
+                    }
+                });
+            });
+        }
+
+
+        function updateFilters(activities) {
+            // Mostrar las facultades y especialidades como listas
+            const facultades = [...new Set(activities.map(a => a.facultad))];
+            const especialidades = [...new Set(activities.map(a => a.especialidad))];
+
+            const facultadesList = document.getElementById('facultades-list');
+            facultadesList.innerHTML = facultades.map(f => `<li><label><input type="checkbox" value="${f}"> ${f}</label></li>`).join('');
+            const especialidadesList = document.getElementById('especialidades-list');
+            especialidadesList.innerHTML = especialidades.map(e => `<li><label><input type="checkbox" value="${e}"> ${e}</label></li>`).join('');
+
+            // Mostrar filtros condicionalmente
+            document.getElementById('universidad-checkbox').addEventListener('change', function () {
+                const checked = this.checked;
+                filters.universidad = checked;
+                toggleFilterVisibility();
+            });
+        }
+
+        function toggleFilterVisibility() {
+            const facultadesFilter = document.getElementById('facultades-filter');
+            const especialidadesFilter = document.getElementById('especialidades-filter');
+
+            if (filters.universidad) {
+                facultadesFilter.style.display = 'block';
+                especialidadesFilter.style.display = 'block';
+            } else {
+                facultadesFilter.style.display = 'none';
+                especialidadesFilter.style.display = 'none';
+            }
+        }
+
+        function filterActivities(activities) {
+            return activities.filter(a => {
+                // Filtrar por universidad, facultad, especialidad, periodo, fecha, medio, responsable, procesa
+                return (!filters.universidad || a.jerarquia.nivel === 'Universidad') &&
+                    (filters.facultades.length === 0 || filters.facultades.includes(a.facultad)) &&
+                    (filters.especialidades.length === 0 || filters.especialidades.includes(a.especialidad)) &&
+                    (!filters.periodo || a.periodo === filters.periodo) &&
+                    (!filters.fechaInicio || new Date(a.fullcalendar.fecha_inicio) >= new Date(filters.fechaInicio)) &&
+                    (!filters.fechaFin || new Date(a.fullcalendar.fecha_fin) <= new Date(filters.fechaFin)) &&
+                    (!filters.medio || a.medio.nombre === filters.medio) &&
+                    (!filters.responsable || a.responsable.nombre === filters.responsable) &&
+                    (!filters.procesa || a.procesa.nombre === filters.procesa);
+            });
+        }
+        // Cargar la tabla al cargar la página
+
+        window.onload = function () {
+            loadFilters();
+            loadTable();
+        };
+    </script>
+</body>
+
+
+</html>

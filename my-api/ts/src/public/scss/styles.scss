@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.header {
+    background-color: #a50000;
+    height: 60px;
+    padding: 15px;
+    text-align: center;
+
+    h1 {
+        color: white;
+    }
+}
+
+.main-container {
+    display: flex;
+
+    .sidebar {
+        width: 20%;
+        padding: 20px;
+        background-color: #f8f8f8;
+        border-right: 1px solid #ddd;
+
+        .filter-section {
+            h2 {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+
+            p {
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .search-bar {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            .filter-category {
+                h3 {
+                    margin: 15px 0 10px 0;
+                    font-size: 1.1em;
+                }
+
+                ul {
+                    list-style-type: none;
+                    padding-left: 15px;
+                }
+
+                li {
+                    margin: 5px 0;
+                }
+            }
+        }
+    }
+
+    .content {
+        width: 80%;
+        padding: 20px;
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+
+            select {
+                padding: 5px;
+            }
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+
+            th,
+            td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #f1f1f1;
+                font-weight: bold;
+            }
+        }
+
+        .pagination {
+            text-align: center;
+
+            a {
+                margin: 0 5px;
+                padding: 8px 12px;
+                text-decoration: none;
+                color: #333;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+
+                &.active {
+                    background-color: #a50000;
+                    color: white;
+                }
+
+                &:hover {
+                    background-color: #ddd;
+                }
+            }
+        }
+    }
+}

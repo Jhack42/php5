@@ -1,227 +1,616 @@
-import express from "express";
-import cors from "cors";
-import axios from "axios"; // Para hacer peticiones a otras APIs
-import { Request, Response } from "express";
+import express from 'express';
+import path from 'path';
 
-// Crear la aplicación Express
+// Inicializa la aplicación de Express
 const app = express();
-const port = 3000;
-const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:3000";
 
-// Habilitar CORS
-app.use(cors());
+// Puerto donde se ejecutará el servidor
+const PORT = 3000;
 
-// Definir una interfaz para la estructura del HTML
-interface HtmlElement {
-  tag: string;
-  content?: string;
-  attributes?: { [key: string]: string };
-  children?: HtmlElement[];
-  api_css?: string;
-}
+// Middleware para servir archivos estáticos (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, 'public')));
 
-// API inicial que devuelve la estructura base del HTML en JSON
-app.get("/api/proyecto/:id", (req: Request, res: Response) => {
-  const projectId = req.params.id;
-
-  const htmlStructure: HtmlElement = {
-    tag: "body",
-    children: [
-      {
-        tag: "h1",
-        api_css: `/api/css/h1-${projectId}`,
-        content: `Título del proyecto ${projectId}`,
-      },
-      {
-        tag: "div",
-        api_css: `/api/css/div-${projectId}`,
-        children: [
-          { tag: "p", content: `Descripción del proyecto ${projectId}` },
-          {
-            tag: "a",
-            attributes: { href: "https://www.youtube.com/watch?v=TyGGNK1xWn8" },
-            content: "Enlace a más detalles",
-          },
-        ],
-      },
-      {
-        tag: "footer",
-        api_css: `/api/css/footer-${projectId}`,
-        content: `Este es el pie de página del proyecto ${projectId}`,
-      },
-    ],
-  };
-
-  res.json(htmlStructure);
-});
-
-// API para el <h1>
-app.get("/api/h1/:projectId", (req: Request, res: Response) => {
-  const projectId = req.params.projectId;
-  res.json({
-    tag: "h1",
-    content: `Título del proyecto ${projectId}`,
-  });
-});
-
-// API para el <div>
-app.get("/api/div/:projectId", (req: Request, res: Response) => {
-  const projectId = req.params.projectId;
-  res.json({
-    tag: "div",
-    children: [
-      { tag: "p", content: `Descripción del proyecto ${projectId}` },
-      {
-        tag: "a",
-        attributes: { href: "https://www.youtube.com/watch?v=TyGGNK1xWn8" },
-        content: "Enlace a más detalles",
-      },
-    ],
-  });
-});
-
-// API para el <footer>
-app.get("/api/footer/:projectId", (req: Request, res: Response) => {
-  const projectId = req.params.projectId;
-  res.json({
-    tag: "footer",
-    content: `Este es el pie de página del proyecto ${projectId}`,
-  });
-});
-
-// API para el CSS del <h1>
-app.get("/api/css/h1-:projectId", (req: Request, res: Response) => {
-  res.json({
-    styles: {
-      color: "blue",
-      "font-size": "24px",
-      "text-align": "center",
+// Ruta para la API que devuelve datos simulados
+app.get('/api/data', (req, res) => {
+  const data = [
+    {
+      id: 1,
+      name: "Actividades",
+      image: "https://i.postimg.cc/zBbGtfPT/eventos.png",
+      href: "/vista2" // Aquí añades la ruta para la vista 2
     },
-  });
+
+    {
+      id: 2,
+      name: "Notificaciones",
+      image: "https://i.postimg.cc/s21jxXzb/Notificaciones.jpg",
+      href: "/"
+    }
+  ];
+  res.json(data); // Devuelve los datos en formato JSON
 });
 
-// API para el CSS del <div>
-app.get("/api/css/div-:projectId", (req: Request, res: Response) => {
-  res.json({
-    styles: {
-      "background-color": "lightgrey",
-      padding: "10px",
-      "border-radius": "5px",
+// Ruta para la API que devuelve datos simulados
+app.get('/api/data/tablas', (req, res) => {
+  const data = [
+    {
+      id: 1,
+      name_de_la_tabla: "TABLA DE ACTIVIDADES",
+      olumna1: "PERIODO",
+      olumna2: "COD. ACTI",
+      olumna3: "DESCRIPCIÓN",
+      olumna4: "FECHA INICIO",
+      olumna5: "FECHA FIN",
+      olumna6: "ESTADO",
+      olumna7: "JERARQUIA",
+      olumna12: "OPCIONES"
     },
-  });
+    {
+      id: 1,
+      name_de_la_tabla: "TABLA DE ACTIVIDADES",
+      olumna1: "PERIODO",
+      olumna2: "COD. ACTI",
+      olumna3: "DESCRIPCIÓN",
+      olumna4: "FECHA INICIO",
+      olumna5: "FECHA FIN",
+      olumna6: "ESTADO",
+      olumna7: "JERARQUIA",
+      olumna8: "MEDIO",
+      olumna9: "RESPONSABLE",
+      olumna10: "PROCESA",
+      olumna11: "OBSERVACION",
+      olumna12: "OPCIONES"
+    }
+  ];
+  res.json(data); // Devuelve los datos en formato JSON
 });
 
-// API para el CSS del <footer>
-app.get("/api/css/footer-:projectId", (req: Request, res: Response) => {
-  res.json({
-    styles: {
-      "background-color": "darkgrey",
-      color: "white",
-      padding: "20px",
-      "text-align": "center",
+// Ruta para la API que devuelve datos simulados
+app.get('/api/data/filtro-checkbox', (req, res) => {
+  const data = [
+    {
+      id: 1,
+      name: "Filtro",
+      checkbox1: "Universidad",
+      checkbox2: "Facultades",
+      checkbox3: "Especialidades"
     },
-  });
+    {
+      id: 2,
+      name: "Medio",
+      checkbox1: "txt",
+      checkbox2: "txt",
+      checkbox3: "txt"
+    },
+    {
+      id: 3,
+      name: "Responsable",
+      checkbox1: "txt",
+      checkbox2: "txt",
+      checkbox3: "txt"
+    },
+    {
+      id: 4,
+      name: "Procesa",
+      checkbox1: "txt",
+      checkbox2: "txt",
+      checkbox3: "txt"
+    },
+  ];
+  res.json(data); // Devuelve los datos en formato JSON
 });
 
-// Función para crear el HTML desde JSON
-async function buildHtmlFromJson(apiUrl: string): Promise<string> {
-  try {
-    const response = await axios.get(apiUrl);
-    const data: HtmlElement = response.data;
-
-    let html = await createElementFromJson(data);
-
-    return `<!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Proyecto ${data.tag}</title>
-        <style>
-            body { font-family: Arial, sans-serif; }
-        </style>
-    </head>
-    <body>
-        ${html}
-    </body>
-    </html>`;
-  } catch (error) {
-    console.error(error);
-    return "<p>Error al generar el HTML.</p>";
-  }
-}
-
-// Función para construir el HTML de cada elemento
-async function createElementFromJson(json: HtmlElement): Promise<string> {
-    let html = `<${json.tag}`;
-  
-    // Agregar atributos como clase, id, etc.
-    if (json.attributes) {
-      for (const [key, value] of Object.entries(json.attributes)) {
-        html += ` ${key}="${value}"`;
+// Ruta para la API que devuelve datos simulados
+app.get('/api/data/para-la-vita1', (req, res) => {
+  const data = [
+    {
+      "id_actividad": 1,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 2,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 3,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 4,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 5,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 6,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 7,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 8,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 9,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 10,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 11,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 12,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 1,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
+      }
+    },
+    {
+      "id_actividad": 13,
+      "nombre_actividad": "Taller de Innovación",
+      "jerarquia": {
+        "id_jerarquia": 1,
+        "nivel": "Universidad"
+      },
+      "facultad": null,
+      "especialidad": null,
+      "periodo": "20241",
+      "codigo_actividad": "TI",
+      "estado": "A",
+      "medio": {
+        "id_medio": 1,
+        "nombre": "Comunicación Interna"
+      },
+      "responsable": {
+        "id_responsable": 2,
+        "nombre": "Departamento de Innovación"
+      },
+      "procesa": {
+        "id_procesa": 3,
+        "nombre": "Equipo de Procesos"
+      },
+      "observacion": "Este taller está dirigido a toda la universidad para promover la innovación tecnológica.",
+      "fullcalendar": {
+        "titulo": "Taller Universitario de Innovación",
+        "descripcion": "Reserva de Matricula",
+        "fecha_inicio": "2024-02-24T09:00:00",
+        "fecha_fin": "2024-07-30T17:00:00",
+        "tipo_actividad": "Un Día",
+        "todo_el_dia": "N",
+        "color": "#FF5733"
       }
     }
-  
-    // Aplicar el CSS en línea si está disponible
-    if (json.api_css) {
-      const inlineCss = await applyCssFromApi(json.api_css);
-      html += ` style="${inlineCss}"`;  // Agregar el CSS como estilos en línea
-    }
-  
-    html += '>';
-  
-    // Agregar contenido al elemento
-    if (json.content) {
-      html += json.content;
-    }
-  
-    // Si tiene hijos, procesarlos recursivamente
-    if (json.children) {
-      for (const child of json.children) {
-        html += await createElementFromJson(child);
-      }
-    }
-  
-    html += `</${json.tag}>`;
-  
-    return html;
-  }
-  
-  // Función para obtener el CSS desde la API
-  async function applyCssFromApi(apiCssUrl: string): Promise<string> {
-    try {
-      const response = await axios.get(`${BASE_URL}${apiCssUrl}`);
-      const cssData = response.data?.styles;
-  
-      if (!cssData || typeof cssData !== 'object') {
-        console.error('Formato de CSS inválido recibido de la API');
-        return '';
-      }
-  
-      // Convertir los estilos a formato de string para estilos en línea
-      return Object.entries(cssData)
-        .map(([property, value]) => `${property}: ${value};`)
-        .join(' ');
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error al obtener CSS de la API:', error.message);
-      } else {
-        console.error('Error desconocido al obtener CSS de la API');
-      }
-      return '';
-    }
-  }
-  
-
-// Nueva API que devuelve el HTML construido
-app.get("/api_html/proyecto/:id", async (req: Request, res: Response) => {
-  const projectId = req.params.id;
-  const apiUrl = `http://127.0.0.1:3000/api/proyecto/${projectId}`;
-  const html = await buildHtmlFromJson(apiUrl);
-  res.send(html);
+    
+  ];
+  res.json(data); // Devuelve los datos en formato JSON
 });
 
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+
+// Ruta para cargar la vista principal (index.html)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Ruta para cargar la vista 2 (vista2.html)
+app.get('/vista2', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'vista2.html'));
+});
+
+
+// Inicia el servidor
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
