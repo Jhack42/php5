@@ -14,5 +14,7 @@
             "email": "juanrayme09@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "laravel/breeze": "^2.2"
+    }
 }
