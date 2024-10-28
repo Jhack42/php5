@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import path from 'path';
 
 // Inicializa la aplicación de Express
@@ -6,6 +7,10 @@ const app = express();
 
 // Puerto donde se ejecutará el servidor
 const PORT = 3000;
+
+// Habilitar CORS para todas las solicitudes
+app.use(cors());
+
 
 // Middleware para servir archivos estáticos (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname, 'public')));
@@ -29,6 +34,282 @@ app.get('/api/data', (req, res) => {
   ];
   res.json(data); // Devuelve los datos en formato JSON
 });
+
+// Ruta para la API que devuelve datos simulados
+app.get('/api/data/propuesta', (req, res) => {
+  const data = [
+    {
+      id: 1,
+      name_abreviado: [{
+        id: 1,
+        letra: "F",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 2,
+        letra: "A",
+        css: "color: #333333;"
+      },
+      {
+        id: 3,
+        letra: "U",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 4,
+        letra: "A",
+        css: "color: #333333;"
+      }
+    ],
+      name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",
+      imagen_del_card: "https://i.postimg.cc/6QCzHP9x/facultad-de-arquitectura.png",
+      imagen_logo: "https://i.postimg.cc/vBWkCzdC/birrete.png",
+      href_tarjeta: "/vista2",
+      especialidades: [
+        {
+          id: 1,
+          name: "Arquitectura",
+          href_especialidad: "/vista2 va a cargar una funcion",
+        }
+      ],
+    },
+    {
+      id: 2,
+      name_abreviado: [{
+        id: 1,
+        letra: "F",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 2,
+        letra: "A",
+        css: "color: #333333;"
+      },
+      {
+        id: 3,
+        letra: "U",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 4,
+        letra: "A",
+        css: "color: #333333;"
+      }
+    ],
+      name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",
+      imagen_del_card: "https://i.postimg.cc/6QCzHP9x/facultad-de-arquitectura.png",
+      imagen_logo: "https://i.postimg.cc/vBWkCzdC/birrete.png",
+      href_tarjeta: "/vista2",
+      especialidades: [
+        {
+          id: 1,
+          name: "Arquitectura",
+          href_especialidad: "/vista2 va a cargar una funcion",
+        }
+      ],
+    },
+    {
+      id: 3,
+      name_abreviado: [{
+        id: 1,
+        letra: "F",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 2,
+        letra: "A",
+        css: "color: #333333;"
+      },
+      {
+        id: 3,
+        letra: "U",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 4,
+        letra: "A",
+        css: "color: #333333;"
+      }
+    ],
+      name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",
+      imagen_del_card: "https://i.postimg.cc/6QCzHP9x/facultad-de-arquitectura.png",
+      imagen_logo: "https://i.postimg.cc/vBWkCzdC/birrete.png",
+      href_tarjeta: "/vista2",
+      especialidades: [
+        {
+          id: 1,
+          name: "Arquitectura",
+          href_especialidad: "/vista2 va a cargar una funcion",
+        }
+      ],
+    },
+    {
+      id: 4,
+      name_abreviado: [{
+        id: 1,
+        letra: "F",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 2,
+        letra: "A",
+        css: "color: #333333;"
+      },
+      {
+        id: 3,
+        letra: "U",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 4,
+        letra: "A",
+        css: "color: #333333;"
+      }
+    ],
+      name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",
+      imagen_del_card: "https://i.postimg.cc/6QCzHP9x/facultad-de-arquitectura.png",
+      imagen_logo: "https://i.postimg.cc/vBWkCzdC/birrete.png",
+      href_tarjeta: "/vista2",
+      especialidades: [
+        {
+          id: 1,
+          name: "Arquitectura",
+          href_especialidad: "/vista2 va a cargar una funcion",
+        }
+      ],
+    },
+    {
+      id: 5,
+      name_abreviado: [{
+        id: 1,
+        letra: "F",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 2,
+        letra: "A",
+        css: "color: #333333;"
+      },
+      {
+        id: 3,
+        letra: "U",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 4,
+        letra: "A",
+        css: "color: #333333;"
+      }
+    ],
+      name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",
+      imagen_del_card: "https://i.postimg.cc/6QCzHP9x/facultad-de-arquitectura.png",
+      imagen_logo: "https://i.postimg.cc/vBWkCzdC/birrete.png",
+      href_tarjeta: "/vista2",
+      especialidades: [
+        {
+          id: 1,
+          name: "Arquitectura",
+          href_especialidad: "/vista2 va a cargar una funcion",
+        }
+      ],
+    },
+    {
+      id: 6,
+      name_abreviado: [{
+        id: 1,
+        letra: "F",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 2,
+        letra: "A",
+        css: "color: #333333;"
+      },
+      {
+        id: 3,
+        letra: "U",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 4,
+        letra: "A",
+        css: "color: #333333;"
+      }
+    ],
+      name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",
+      imagen_del_card: "https://i.postimg.cc/6QCzHP9x/facultad-de-arquitectura.png",
+      imagen_logo: "https://i.postimg.cc/vBWkCzdC/birrete.png",
+      href_tarjeta: "/vista2",
+      especialidades: [
+        {
+          id: 1,
+          name: "Arquitectura",
+          href_especialidad: "/vista2 va a cargar una funcion",
+        }
+      ],
+    },
+    {
+      id: 7,
+      name_abreviado: [{
+        id: 1,
+        letra: "F",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 2,
+        letra: "A",
+        css: "color: #333333;"
+      },
+      {
+        id: 3,
+        letra: "U",
+        css: "color: #A2281D;"
+      },
+      {
+        id: 4,
+        letra: "A",
+        css: "color: #333333;"
+      }
+    ],
+      name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",
+      imagen_del_card: "https://i.postimg.cc/6QCzHP9x/facultad-de-arquitectura.png",
+      imagen_logo: "https://i.postimg.cc/vBWkCzdC/birrete.png",
+      href_tarjeta: "/vista2",
+      especialidades: [
+        {
+          id: 1,
+          name: "Arquitectura",
+          href_especialidad: "/vista2 va a cargar una funcion",
+        }
+      ],
+    },
+  ];
+  res.json(data); // Devuelve los datos en formato JSON
+});
+
+//----------------------------------------------------------------
+// Ruta para la API que devuelve datos simulados
+app.get('/api/data/propuesta/a', (req, res) => {
+  const data = [
+    {
+      id: 1,
+      name_abreviado: "FAUA",
+      name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",
+      imagen_del_card: "https://i.postimg.cc/6QCzHP9x/facultad-de-arquitectura.png",
+      imagen_logo: "https://i.postimg.cc/vBWkCzdC/birrete.png",
+      href_tarjeta: "/vista2",
+      especialidades: [
+        {
+          id: 1,
+          name: "Arquitectura",
+          href: "/vista2 va a cargar una funcion",
+        }
+      ],
+    }
+  ];
+  res.json(data); // Devuelve los datos en formato JSON
+});
+//----------------------------------------------------------------
 
 // Ruta para la API que devuelve datos simulados
 app.get('/api/data/tablas', (req, res) => {
@@ -593,7 +874,7 @@ app.get('/api/data/para-la-vita1', (req, res) => {
         "color": "#FF5733"
       }
     }
-    
+
   ];
   res.json(data); // Devuelve los datos en formato JSON
 });

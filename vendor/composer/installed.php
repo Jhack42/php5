@@ -3,7 +3,7 @@
         'name' => 'soporte/php5',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '43f45d1b0241885a2b54bfdd383a14763503b54f',
+        'reference' => 'e52ce1e546449e840bd2097109558fa3d18310bf',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -265,7 +265,7 @@
         'soporte/php5' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '43f45d1b0241885a2b54bfdd383a14763503b54f',
+            'reference' => 'e52ce1e546449e840bd2097109558fa3d18310bf',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
