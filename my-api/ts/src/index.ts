@@ -43,22 +43,27 @@ app.get('/api/data/propuesta', (req, res) => {
       name_abreviado: [{
         id: 1,
         letra: "F",
-        css: "color: #A2281D;"
+        css: "color: #333333;"
       },
       {
         id: 2,
         letra: "A",
-        css: "color: #333333;"
+        css: "color: #A2281D;"
       },
       {
         id: 3,
         letra: "U",
-        css: "color: #A2281D;"
+        css: "color: #333333;"
       },
       {
         id: 4,
         letra: "A",
-        css: "color: #333333;"
+        css: "color: #A2281D;"
+      },
+      {
+        id: 5,
+        letra: "A",
+        css: "color: #A2281D;"
       }
     ],
       name_completo: "FACULTAD DE ARQUITECTURA URBANISMO Y ARTES",

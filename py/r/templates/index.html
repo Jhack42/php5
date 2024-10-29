@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Neuronal en Tiempo Real</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <h1>Visualización en Tiempo Real de la Red Neuronal</h1>
+    
+    <!-- Formulario para la configuración del modelo -->
+    <div>
+        <label>Número de Neuronas por Capa (separado por comas): </label>
+        <input type="text" id="layers" value="10,10,10">
+        <br>
+        <label>Número de Iteraciones (Épocas): </label>
+        <input type="number" id="epochs" value="50">
+        <br>
+        <button onclick="startTraining()">Iniciar Entrenamiento</button>
+    </div>
+
+    <!-- Gráfico de pérdida -->
+    <h2>Gráfico de Pérdida</h2>
+    <canvas id="lossChart" width="400" height="200"></canvas>
+    
+    <!-- Gráfico de red neuronal -->
+    <h2>Visualización de la Red Neuronal</h2>
+    <div id="network"></div>
+
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Configuración del gráfico de pérdida
+        const lossCtx = document.getElementById('lossChart').getContext('2d');
+        const lossChart = new Chart(lossCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Pérdida',
+                    data: [],
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Épocas' }},
+                    y: { title: { display: true, text: 'Pérdida' }}
+                }
+            }
+        });
+
+        // Configuración de SVG para la visualización de la red neuronal
+        const layerSpacing = 150;
+        const neuronSpacing = 50;
+        let svg;
+
+        function setupSVG(numLayers, maxNeurons) {
+            const svgWidth = (numLayers - 1) * layerSpacing + 200;
+            const svgHeight = maxNeurons * neuronSpacing + 100;
+
+            // Limpiar SVG anterior si existe
+            if (svg) svg.remove();
+
+            svg = d3.select("#network")
+                .append("svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight)
+                .style("border", "1px solid #ccc");  // Borde para visualizar el área
+        }
+
+        // Función para renderizar la red neuronal
+        function renderNetwork(weights) {
+            const numLayers = weights.length + 1;  // Número total de capas
+            const maxLayerNeurons = Math.max(...weights.map(l => l.length), 2);
+
+            // Ajustar el tamaño de SVG según el tamaño de la red
+            setupSVG(numLayers, maxLayerNeurons);
+
+            // Data-join para actualizar líneas de conexión en el SVG
+            const lines = svg.selectAll("line")
+                .data(weights.flatMap((layer, layerIndex) =>
+                    layer.flatMap((neuronWeights, neuronIndex) =>
+                        neuronWeights.map((weight, nextNeuronIndex) => ({
+                            x1: 100 + layerIndex * layerSpacing,
+                            y1: 50 + neuronIndex * neuronSpacing,
+                            x2: 100 + (layerIndex + 1) * layerSpacing,
+                            y2: 50 + nextNeuronIndex * neuronSpacing,
+                            weight: weight
+                        }))
+                    )
+                ));
+
+            lines.join(
+                enter => enter.append("line")
+                    .attr("x1", d => d.x1)
+                    .attr("y1", d => d.y1)
+                    .attr("x2", d => d.x2)
+                    .attr("y2", d => d.y2)
+                    .attr("stroke-width", d => Math.abs(d.weight) * 2)
+                    .attr("stroke", d => d.weight > 0 ? "blue" : "red")
+                    .attr("opacity", 0.7),
+                update => update
+                    .attr("x1", d => d.x1)
+                    .attr("y1", d => d.y1)
+                    .attr("x2", d => d.x2)
+                    .attr("y2", d => d.y2)
+                    .attr("stroke-width", d => Math.abs(d.weight) * 2)
+                    .attr("stroke", d => d.weight > 0 ? "blue" : "red"),
+                exit => exit.remove()
+            );
+        }
+
+        // Función para iniciar el entrenamiento
+        function startTraining() {
+            const layers = document.getElementById('layers').value.split(',').map(Number);
+            const epochs = parseInt(document.getElementById('epochs').value);
+
+            socket.emit('start_training', { layers: layers, epochs: epochs });
+        }
+
+        // Escuchar las actualizaciones de entrenamiento desde el servidor
+        socket.on('training_update', function(data) {
+            const epoch = data.epoch;
+            const loss = data.loss;
+
+            // Actualizar gráfico de pérdida
+            lossChart.data.labels.push(epoch);
+            lossChart.data.datasets[0].data.push(loss);
+            lossChart.update();
+
+            // Renderizar la red neuronal
+            renderNetwork(data.weights);
+        });
+    </script>
+</body>
+</html>

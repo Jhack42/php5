@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Red Neuronal en Tiempo Real</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Red Neuronal en Tiempo Real</h1>
+    
+    <!-- Formulario para la configuración del modelo -->
+    <div>
+        <label>Número de Neuronas por Capa (separado por comas): </label>
+        <input type="text" id="layers" value="10,10,10">
+        <br>
+        <label>Número de Iteraciones (Épocas): </label>
+        <input type="number" id="epochs" value="50">
+        <br>
+        <button onclick="startTraining()">Iniciar Entrenamiento</button>
+    </div>
+
+    <!-- Gráfico de pérdida -->
+    <h2>Gráfico de Pérdida</h2>
+    <canvas id="lossChart" width="400" height="200"></canvas>
+    
+    <!-- Gráfico de red neuronal -->
+    <h2>Visualización de la Red Neuronal</h2>
+    <div id="network"></div>
+
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Configuración del gráfico de pérdida
+        const lossCtx = document.getElementById('lossChart').getContext('2d');
+        const lossChart = new Chart(lossCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Pérdida',
+                    data: [],
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Épocas' }},
+                    y: { title: { display: true, text: 'Pérdida' }}
+                }
+            }
+        });
+
+        // Función para iniciar el entrenamiento
+        function startTraining() {
+            const layers = document.getElementById('layers').value.split(',').map(Number);
+            const epochs = parseInt(document.getElementById('epochs').value);
+
+            socket.emit('start_training', { layers: layers, epochs: epochs });
+        }
+
+        // Escuchar las actualizaciones de entrenamiento desde el servidor
+        socket.on('training_update', function(data) {
+            const epoch = data.epoch;
+            const loss = data.loss;
+
+            // Actualizar gráfico de pérdida
+            lossChart.data.labels.push(epoch);
+            lossChart.data.datasets[0].data.push(loss);
+            lossChart.update();
+
+            // Renderizar la red neuronal
+            renderNetwork(data.weights);
+        });
+
+        // Función para renderizar la red neuronal (puedes adaptarla como desees)
+        function renderNetwork(weights) {
+            const networkDiv = document.getElementById('network');
+            networkDiv.innerHTML = ''; // Limpiar visualización previa
+
+            // Visualización simple
+            weights.forEach((layer, layerIndex) => {
+                const layerDiv = document.createElement('div');
+                layerDiv.innerHTML = `Capa ${layerIndex + 1}: ${layer.length} neuronas`;
+                networkDiv.appendChild(layerDiv);
+            });
+        }
+    </script>
+</body>
+</html>

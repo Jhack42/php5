@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización en Tiempo Real de la Red Neuronal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js" defer></script>
+    <script src="https://d3js.org/d3.v5.min.js" defer></script>
+</head>
+<body>
+    <h1>Visualización en Tiempo Real de la Red Neuronal</h1>
+    <div id="network"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const socket = io.connect('http://' + document.domain + ':' + location.port);
+            
+            // Parámetros de red neuronal (ajustados dinámicamente según los datos recibidos)
+            let numLayers = 4;  // Número de capas (incluyendo entrada y salida)
+            let maxNeurons = 16;  // Máximo número de neuronas en una capa
+            
+            // Configuración inicial del SVG
+            const layerSpacing = 150;
+            const neuronSpacing = 50;
+            const svgWidth = (numLayers - 1) * layerSpacing + 200;
+            const svgHeight = maxNeurons * neuronSpacing + 100;
+
+            const svg = d3.select("#network")
+                          .append("svg")
+                          .attr("width", svgWidth)
+                          .attr("height", svgHeight)
+                          .style("border", "1px solid #ccc");  // Borde para visualizar el área
+
+            // Función para renderizar la red neuronal
+            function renderNetwork(weights) {
+                const layerCount = weights.length + 1;  // Incluye capa de entrada
+                const maxLayerNeurons = Math.max(...weights.map(l => l.length), 2);  // Máx entre capas y entrada/salida
+
+                svg.attr("width", (layerCount - 1) * layerSpacing + 200);
+                svg.attr("height", maxLayerNeurons * neuronSpacing + 100);
+
+                // Data-join para actualizar líneas de conexión en el SVG
+                const lines = svg.selectAll("line")
+                    .data(weights.flatMap((layer, layerIndex) =>
+                        layer.flatMap((neuronWeights, neuronIndex) =>
+                            neuronWeights.map((weight, nextNeuronIndex) => ({
+                                x1: 100 + layerIndex * layerSpacing,
+                                y1: 50 + neuronIndex * neuronSpacing,
+                                x2: 100 + (layerIndex + 1) * layerSpacing,
+                                y2: 50 + nextNeuronIndex * neuronSpacing,
+                                weight: weight
+                            }))
+                        )
+                    ));
+
+                lines.join(
+                    enter => enter.append("line")
+                        .attr("x1", d => d.x1)
+                        .attr("y1", d => d.y1)
+                        .attr("x2", d => d.x2)
+                        .attr("y2", d => d.y2)
+                        .attr("stroke-width", d => Math.abs(d.weight) * 2)
+                        .attr("stroke", d => d.weight > 0 ? "blue" : "red")
+                        .attr("opacity", 0.7),
+                    update => update
+                        .attr("x1", d => d.x1)
+                        .attr("y1", d => d.y1)
+                        .attr("x2", d => d.x2)
+                        .attr("y2", d => d.y2)
+                        .attr("stroke-width", d => Math.abs(d.weight) * 2)
+                        .attr("stroke", d => d.weight > 0 ? "blue" : "red"),
+                    exit => exit.remove()
+                );
+            }
+
+            // Escuchar mensajes de pesos desde el servidor
+            socket.on('weights_update', function(data) {
+                // Ajustar los valores de numLayers y maxNeurons según la red recibida
+                numLayers = data.weights.length + 1;
+                maxNeurons = Math.max(...data.weights.map(layer => layer.length), 2);
+
+                renderNetwork(data.weights);  // Actualizar visualización con nuevos pesos
+            });
+        });
+    </script>
+</body>
+</html>
