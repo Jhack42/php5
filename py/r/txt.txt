@@ -1,0 +1,9 @@
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5 (rama1-jhack)
+$ cd py
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/py (rama1-jhack)
+$ cd r
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/py/r (rama1-jhack)
+$ python app.py
