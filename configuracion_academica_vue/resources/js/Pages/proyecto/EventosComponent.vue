@@ -3,64 +3,69 @@
       <!-- Barra lateral de filtros -->
       <div class="column is-one-quarter">
         <aside class="menu">
-          <p class="menu-label">Filtros</p>
+          <div class="config-header">
+            <p class="menu-label">Filtros</p>
+            <span @click="mostrarConfiguracion = true" class="config-icon">⚙️</span>
+          </div>
           <ul class="menu-list">
             <li v-for="filtro in filtrosVisibles" :key="filtro.clave">
               <label>{{ filtro.titulo }}</label>
-              <input v-if="filtro.tipo === 'text'" type="text" v-model="valoresFiltros[filtro.clave]" @input="aplicarFiltros" />
-              <select v-if="filtro.tipo === 'select'" v-model="valoresFiltros[filtro.clave]" @change="aplicarFiltros">
+              <input v-if="filtro.tipo === 'text'" type="text" class="input is-small" v-model="valoresFiltros[filtro.clave]" @input="aplicarFiltros" />
+              <select v-if="filtro.tipo === 'select'" class="select is-small" v-model="valoresFiltros[filtro.clave]" @change="aplicarFiltros">
                 <option v-for="opcion in filtro.opciones" :key="opcion" :value="opcion">{{ opcion }}</option>
               </select>
             </li>
           </ul>
-          <button @click="mostrarConfiguracionFiltros = true" class="button is-info is-small">Editar Filtros</button>
         </aside>
       </div>
 
-      <!-- Configuración de Filtros (Modal) -->
-      <div v-if="mostrarConfiguracionFiltros" class="modal is-active">
-        <div class="modal-background" @click="mostrarConfiguracionFiltros = false"></div>
+      <!-- Configuración (Modal) -->
+      <div v-if="mostrarConfiguracion" class="modal is-active">
+        <div class="modal-background" @click="mostrarConfiguracion = false"></div>
         <div class="modal-content">
           <div class="box">
-            <h3 class="title">Configurar Filtros</h3>
-            <ul>
-              <li v-for="filtro in opcionesFiltros" :key="filtro.clave">
-                <input type="checkbox" v-model="filtro.visible" />
-                <input type="text" v-model="filtro.titulo" placeholder="Nombre del filtro" />
-                <select v-model="filtro.tipo">
-                  <option value="text">Texto</option>
-                  <option value="select">Seleccionar</option>
-                </select>
-              </li>
-            </ul>
-            <button @click="guardarConfiguracionFiltros" class="button is-success">Guardar Filtros</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Configuración de Columnas (Modal) -->
-      <div v-if="mostrarConfiguracionColumnas" class="modal is-active">
-        <div class="modal-background" @click="mostrarConfiguracionColumnas = false"></div>
-        <div class="modal-content">
-          <div class="box">
-            <h3 class="title">Configurar Columnas</h3>
-            <ul>
-              <li v-for="(columna, index) in opcionesColumnas" :key="columna.clave">
-                <input type="checkbox" v-model="columna.visible" />
-                <input type="text" v-model="columna.titulo" placeholder="Nombre de columna" />
-                <button @click="moverColumna(index, -1)" :disabled="index === 0">↑</button>
-                <button @click="moverColumna(index, 1)" :disabled="index === opcionesColumnas.length - 1">↓</button>
-              </li>
-            </ul>
-            <button @click="guardarConfiguracionColumnas" class="button is-success">Guardar Configuración</button>
+            <h3 class="title">Configuración</h3>
+            <div class="tabs is-centered is-boxed">
+              <ul>
+                <li :class="{ 'is-active': configuracionActiva === 'filtros' }" @click="configuracionActiva = 'filtros'">
+                  <a>Filtros</a>
+                </li>
+                <li :class="{ 'is-active': configuracionActiva === 'columnas' }" @click="configuracionActiva = 'columnas'">
+                  <a>Columnas</a>
+                </li>
+              </ul>
+            </div>
+            <div v-if="configuracionActiva === 'filtros'">
+              <ul>
+                <li v-for="filtro in opcionesFiltros" :key="filtro.clave" class="config-item">
+                  <input type="checkbox" v-model="filtro.visible" class="checkbox" />
+                  <input type="text" v-model="filtro.titulo" class="input is-small" placeholder="Nombre del filtro" />
+                  <select v-model="filtro.tipo" class="select is-small">
+                    <option value="text">Texto</option>
+                    <option value="select">Seleccionar</option>
+                  </select>
+                </li>
+              </ul>
+              <button @click="guardarConfiguracionFiltros" class="button is-success is-small">Guardar Filtros</button>
+            </div>
+            <div v-if="configuracionActiva === 'columnas'">
+              <ul>
+                <li v-for="(columna, index) in opcionesColumnas" :key="columna.clave" class="config-item">
+                  <input type="checkbox" v-model="columna.visible" class="checkbox" />
+                  <input type="text" v-model="columna.titulo" class="input is-small" placeholder="Nombre de columna" />
+                  <button @click="moverColumna(index, -1)" :disabled="index === 0" class="button is-small">↑</button>
+                  <button @click="moverColumna(index, 1)" :disabled="index === opcionesColumnas.length - 1" class="button is-small">↓</button>
+                </li>
+              </ul>
+              <button @click="guardarConfiguracionColumnas" class="button is-success is-small">Guardar Columnas</button>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Tabla de eventos -->
       <div class="column">
-        <button @click="mostrarConfiguracionColumnas = true" class="button is-info">Configurar Tabla</button>
-        <table class="table is-striped">
+        <table class="table is-striped is-fullwidth">
           <thead>
             <tr>
               <th v-for="columna in columnasVisibles" :key="columna.clave">{{ columna.titulo }}</th>
@@ -85,34 +90,33 @@
   export default {
     data() {
       return {
-        mostrarConfiguracionFiltros: false,
-        mostrarConfiguracionColumnas: false,
+        mostrarConfiguracion: false,
+        configuracionActiva: 'filtros', // Opción activa en el modal de configuración
         eventosFiltrados: [],
         valoresFiltros: {},
         opcionesFiltros: [
           { clave: 'periodo', titulo: 'Periodo', tipo: 'text', visible: true },
           { clave: 'codigo_actividad', titulo: 'Código Actividad', tipo: 'text', visible: true },
           { clave: 'estado', titulo: 'Estado', tipo: 'select', visible: true, opciones: ['A', 'I'] },
-          // Más filtros aquí
         ],
         opcionesColumnas: [
-        { clave: 'id_actividad', titulo: 'ID Actividad', visible: true },
-                { clave: 'nombre_actividad', titulo: 'Nombre Actividad', visible: true },
-                { clave: 'jerarquia.nivel', titulo: 'Jerarquía', visible: true },
-                { clave: 'facultad', titulo: 'Facultad', visible: false },
-                { clave: 'especialidad', titulo: 'Especialidad', visible: false },
-                { clave: 'periodo', titulo: 'Periodo', visible: true },
-                { clave: 'codigo_actividad', titulo: 'Código Actividad', visible: true },
-                { clave: 'estado', titulo: 'Estado', visible: true },
-                { clave: 'medio.nombre', titulo: 'Medio', visible: false },
-                { clave: 'responsable.nombre', titulo: 'Responsable', visible: true },
-                { clave: 'procesa.nombre', titulo: 'Procesa', visible: false },
-                { clave: 'observacion', titulo: 'Observación', visible: false },
-                { clave: 'fullcalendar.descripcion', titulo: 'Descripción', visible: true },
-                { clave: 'fullcalendar.fecha_inicio', titulo: 'Fecha Inicio', visible: true },
-                { clave: 'fullcalendar.fecha_fin', titulo: 'Fecha Fin', visible: true },
-                { clave: 'fullcalendar.tipo_actividad', titulo: 'Tipo Actividad', visible: false },
-                { clave: 'fullcalendar.todo_el_dia', titulo: 'Todo el Día', visible: false },
+          { clave: 'id_actividad', titulo: 'ID Actividad', visible: true },
+          { clave: 'nombre_actividad', titulo: 'Nombre Actividad', visible: true },
+          { clave: 'jerarquia.nivel', titulo: 'Jerarquía', visible: true },
+          { clave: 'facultad', titulo: 'Facultad', visible: false },
+          { clave: 'especialidad', titulo: 'Especialidad', visible: false },
+          { clave: 'periodo', titulo: 'Periodo', visible: true },
+          { clave: 'codigo_actividad', titulo: 'Código Actividad', visible: true },
+          { clave: 'estado', titulo: 'Estado', visible: true },
+          { clave: 'medio.nombre', titulo: 'Medio', visible: false },
+          { clave: 'responsable.nombre', titulo: 'Responsable', visible: true },
+          { clave: 'procesa.nombre', titulo: 'Procesa', visible: false },
+          { clave: 'observacion', titulo: 'Observación', visible: false },
+          { clave: 'fullcalendar.descripcion', titulo: 'Descripción', visible: true },
+          { clave: 'fullcalendar.fecha_inicio', titulo: 'Fecha Inicio', visible: true },
+          { clave: 'fullcalendar.fecha_fin', titulo: 'Fecha Fin', visible: true },
+          { clave: 'fullcalendar.tipo_actividad', titulo: 'Tipo Actividad', visible: false },
+          { clave: 'fullcalendar.todo_el_dia', titulo: 'Todo el Día', visible: false },
         ]
       };
     },
@@ -157,11 +161,11 @@
       },
       guardarConfiguracionFiltros() {
         Cookies.set('configuracionFiltros', JSON.stringify(this.opcionesFiltros), { expires: 7 });
-        this.mostrarConfiguracionFiltros = false;
+        this.mostrarConfiguracion = false;
       },
       guardarConfiguracionColumnas() {
         Cookies.set('configuracionColumnas', JSON.stringify(this.opcionesColumnas), { expires: 7 });
-        this.mostrarConfiguracionColumnas = false;
+        this.mostrarConfiguracion = false;
       },
       cargarConfiguracion() {
         const filtrosGuardados = Cookies.get('configuracionFiltros');
@@ -180,6 +184,21 @@
   <style scoped>
   .eventos-component {
     display: flex;
+  }
+  .config-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .config-icon {
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #3273dc; /* Color azul */
+  }
+  .config-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   .modal.is-active {
     display: flex;

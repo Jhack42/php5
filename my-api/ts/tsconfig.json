@@ -6,9 +6,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",  // Directorio de salida
-    "rootDir": "./src"   // Directorio donde están los archivos TypeScript
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "typeRoots": ["./node_modules/@types", "./src/@types"]  // Incluye el directorio personalizado
   },
-  "include": ["src/**/*.ts"],  // Especifica la carpeta donde están los archivos .ts
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
