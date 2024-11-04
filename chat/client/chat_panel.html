@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Panel</title>
+  <style>
+    /* Estilos básicos */
+    body {
+      display: flex;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Barra lateral de chats */
+    .sidebar {
+      width: 300px;
+      background-color: #2a2f32;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      color: #ece5dd;
+    }
+
+    /* Área de chat */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: #f0f0f0;
+      display: none;
+      /* Oculto al inicio */
+    }
+
+    /* Encabezado de chat */
+    .chat-header {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: #075e54;
+      color: white;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .chat-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .chat-header .chat-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* Mensaje de bienvenida */
+    .welcome-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      background-color: #f0f0f0;
+      color: #333;
+      font-size: 20px;
+    }
+
+    /* Barra de búsqueda */
+    .search-bar {
+      background-color: #323739;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      margin-bottom: 15px;
+    }
+
+    .search-bar input {
+      background: none;
+      border: none;
+      outline: none;
+      color: #fff;
+      padding-left: 10px;
+      flex: 1;
+    }
+
+    /* Lista de chats */
+    .chat-list {
+      list-style: none;
+      padding: 0;
+      overflow-y: auto;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .chat-item:hover {
+      background-color: #323739;
+    }
+
+    .chat-item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    /* Contenedor del mensaje */
+    .messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: #ece5dd;
+    }
+
+    .message {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 10px;
+      max-width: 60%;
+    }
+
+    .message.sent {
+      background-color: #dcf8c6;
+      align-self: flex-end;
+    }
+
+    .message.received {
+      background-color: #ffffff;
+      align-self: flex-start;
+    }
+
+    /* Formulario para enviar mensajes */
+    .message-form {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+    }
+
+    .message-form input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .message-form button {
+      padding: 10px;
+      margin-left: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Pop-up de perfil de usuario */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 2rem;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      z-index: 1000;
+      width: 300px;
+      text-align: center;
+    }
+
+    .popup h3 {
+      margin-top: 0;
+    }
+
+    /* Barra de perfil del usuario */
+    .user-bar {
+      width: 50px;
+      background-color: #2a2f32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .user-bar img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .popup button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .popup button:hover {
+      background-color: #0056b3;
+    }
+
+    .popup form input,
+    .popup form button {
+      width: 100%;
+      margin: 5px 0;
+    }
+
+    /* Fondo oscuro cuando el pop-up está activo */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .popup-overlay.active,
+    .popup.active {
+      display: block;
+    }
+
+    /*--------------------------------------------------*/
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+    }
+
+    .popup-overlay.active {
+      display: block;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .popup.active {
+      display: block;
+    }
+
+    .popup h3 {
+      margin: 0;
+      margin-bottom: 10px;
+    }
+
+    .popup form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .popup form input,
+    .popup form button {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de perfil del usuario -->
+  <div class="user-bar">
+    <img src="https://via.placeholder.com/40" alt="Avatar" id="userAvatar" onclick="openUserProfile()" />
+  </div>
+  <!-- Barra lateral -->
+  <div class="sidebar">
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Buscar contactos" id="searchInput" oninput="searchUsers()">
+    </div>
+    <ul class="chat-list" id="chatList"></ul>
+  </div>
+
+  <div id="welcomeMessage" class="welcome-message">
+    <p>Selecciona un chat para empezar</p>
+  </div>
+
+  <div class="chat-container" id="chatContainer" style="display: none;">
+    <div class="chat-header" id="chatHeader">
+      <img src="https://via.placeholder.com/40" alt="Avatar" id="chatUserImage">
+      <span class="chat-name" id="chatUserName"></span>
+    </div>
+    <div class="messages" id="messages"></div>
+    <form class="message-form" id="messageForm">
+      <input type="text" id="messageInput" placeholder="Escribe un mensaje..." required>
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+  <!-- Pop-up de perfil de usuario -->
+  <div id="userProfilePopup" class="popup">
+    <h3>Perfil de Usuario</h3>
+    <form id="userProfileForm">
+      <input type="text" id="username" placeholder="Nombre" required />
+      <input type="email" id="email" placeholder="Correo" required />
+      <input type="password" id="password" placeholder="Nueva Contraseña" />
+      <input type="file" id="profileImage" accept="image/*" />
+      <button type="submit">Guardar Cambios</button>
+    </form>
+    <button onclick="closeUserProfile()">Cancelar</button>
+  </div>
+  <div class="popup-overlay" onclick="closeUserProfile()"></div>
+
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io({ auth: { userId: localStorage.getItem('userId') } });
+
+    let activeUserId = null;
+    const messagesContainer = document.getElementById('messages');
+    const messageForm = document.getElementById('messageForm');
+    const messageInput = document.getElementById('messageInput');
+    const chatContainer = document.getElementById('chatContainer');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const chatUserName = document.getElementById('chatUserName');
+    const chatUserImage = document.getElementById('chatUserImage');
+
+    async function searchUsers() {
+      const searchTerm = document.getElementById('searchInput').value;
+      const response = await fetch(`/api/search-users?q=${encodeURIComponent(searchTerm)}`);
+      const users = await response.json();
+      const chatList = document.getElementById('chatList');
+      chatList.innerHTML = '';
+      users.forEach(user => {
+        const item = document.createElement('li');
+        item.className = 'chat-item';
+        item.innerHTML = `<img src="${user[2] || 'https://via.placeholder.com/40'}" alt="Avatar">
+                            <div class="chat-info">
+                              <span class="chat-name">${user[1]}</span>
+                            </div>`;
+        item.onclick = () => loadChat(user[0], user[1], user[2]);
+        chatList.appendChild(item);
+      });
+    }
+
+    function loadChat(userId, userName, userImage) {
+      activeUserId = userId;
+      messagesContainer.innerHTML = '';
+      chatUserName.textContent = userName;
+      chatUserImage.src = userImage || 'https://via.placeholder.com/40';
+      welcomeMessage.style.display = 'none';
+      chatContainer.style.display = 'flex';
+      socket.emit('loadChat', userId);
+    }
+
+    socket.on('chat history', (messages) => {
+      messages.forEach(({ content, senderId, timestamp }) => {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', senderId === activeUserId ? 'received' : 'sent');
+        messageElement.textContent = `${content} - ${new Date(timestamp).toLocaleString()}`;
+        messagesContainer.appendChild(messageElement);
+      });
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+
+    socket.on('chat message', (content, senderId, timestamp) => {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', senderId === activeUserId ? 'received' : 'sent');
+      messageElement.textContent = `${content} - ${new Date(timestamp).toLocaleString()}`;
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+
+    socket.on('update chat list', async () => {
+      await loadRecentChats();
+    });
+
+    async function loadRecentChats() {
+      try {
+        const response = await fetch('/api/recent-chats');
+        if (!response.ok) throw new Error('Error al cargar chats recientes');
+
+        const chats = await response.json();
+        const chatList = document.getElementById('chatList');
+        chatList.innerHTML = '';
+        chats.forEach(chat => {
+          const item = document.createElement('li');
+          item.className = 'chat-item';
+          item.innerHTML = `<img src="${chat.img || 'https://via.placeholder.com/40'}" alt="Avatar">
+                              <div class="chat-info">
+                                <span class="chat-name">${chat.nombre}</span>
+                                <p class="chat-last-message">${chat.ultimoMensaje}</p>
+                              </div>`;
+          item.onclick = () => loadChat(chat.userId, chat.nombre, chat.img);
+          chatList.appendChild(item);
+        });
+      } catch (error) {
+        console.error('Error en loadRecentChats:', error);
+      }
+    }
+
+    messageForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const message = messageInput.value;
+      if (message && activeUserId) {
+        socket.emit('chat message', { content: message, recipientId: activeUserId });
+        messageInput.value = '';
+      }
+    });
+
+    document.getElementById('userAvatar').addEventListener('click', openUserProfile);
+
+
+    async function openUserProfile() {
+      // Obtener datos de perfil
+      const response = await fetch('/api/profile');
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('Datos obtenidos para el perfil:', result); // Log adicional para verificar los datos obtenidos
+        document.getElementById('username').value = result.name || '';
+        document.getElementById('email').value = result.email || '';
+        if (result.img) {
+          document.getElementById('userAvatar').src = `/uploads/${result.img}`;
+        }
+        document.getElementById('userProfilePopup').classList.add('active');
+        document.querySelector('.popup-overlay').classList.add('active');
+      } else {
+        alert('Error al obtener los datos del perfil');
+      }
+    }
+
+    document.getElementById('userProfileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(document.getElementById('userProfileForm'));
+      if (document.getElementById('profileImage').files[0]) {
+        formData.append('profileImage', document.getElementById('profileImage').files[0]);
+      }
+      formData.append('userId', localStorage.getItem('userId'));
+
+      // Log de los valores en FormData
+      console.log('Datos enviados en FormData:');
+      formData.forEach((value, key) => console.log(key, value));
+
+      const response = await fetch('/api/update-profile', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert('Perfil actualizado exitosamente');
+        closeUserProfile();
+        await openUserProfile(); // Refrescar datos de perfil
+      } else {
+        alert('Error al actualizar el perfil');
+      }
+    });
+
+    function closeUserProfile() {
+      document.getElementById('userProfilePopup').classList.remove('active');
+      document.querySelector('.popup-overlay').classList.remove('active');
+    }
+
+    document.getElementById('userAvatar').addEventListener('click', openUserProfile);
+
+    loadRecentChats();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <style>
+    /* Estilos básicos */
+    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; background-color: #f0f0f0; }
+    .chat-container { display: flex; flex-direction: column; flex: 1; padding: 10px; overflow-y: auto; }
+    .message { padding: 10px; margin: 5px; border-radius: 10px; }
+    .message.sent { background-color: #dcf8c6; align-self: flex-end; }
+    .message.received { background-color: #ffffff; align-self: flex-start; }
+    .message-form { display: flex; padding: 10px; border-top: 1px solid #ddd; }
+    .message-form input { flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    .message-form button { padding: 10px; margin-left: 5px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container" id="chatContainer">
+    <!-- Mensajes cargados dinámicamente -->
+  </div>
+
+  <form class="message-form" id="messageForm">
+    <input type="text" id="messageInput" placeholder="Escribe un mensaje..." required>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    // Obtener el userId del usuario con el que estamos chateando de la URL
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get('userId');
+
+    // Inicializar Socket.IO
+    const socket = io({ auth: { userId } });
+
+    const chatContainer = document.getElementById('chatContainer');
+    const messageForm = document.getElementById('messageForm');
+    const messageInput = document.getElementById('messageInput');
+
+    // Cargar historial de mensajes al conectarse
+    socket.on('connect', () => {
+      console.log('Conectado al servidor de chat');
+      socket.emit('loadChat', userId);
+    });
+
+    // Mostrar mensajes recibidos
+    socket.on('chat message', (msg, senderId, timestamp) => {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+      messageElement.classList.add(senderId === userId ? 'received' : 'sent');
+      messageElement.textContent = `${msg} - ${new Date(timestamp).toLocaleString()}`;
+      chatContainer.appendChild(messageElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll al último mensaje
+    });
+
+    // Enviar mensaje
+    messageForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const message = messageInput.value;
+      if (message) {
+        socket.emit('chat message', { message, recipientId: userId });
+        messageInput.value = '';
+      }
+    });
+  </script>
+</body>
+</html>

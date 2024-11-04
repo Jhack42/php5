@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Sidebar</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #131c21;
+            color: #ece5dd;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Contenedor de la barra lateral */
+        .sidebar {
+            width: 300px;
+            background-color: #2a2f32;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        /* Barra de búsqueda */
+        .search-bar {
+            background-color: #323739;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #fff;
+            padding-left: 10px;
+            flex: 1;
+        }
+
+        .search-bar i {
+            color: #a6a6a6;
+        }
+
+        /* Filtros de chats */
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            color: #a6a6a6;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .filter {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .filter:hover {
+            background-color: #323739;
+            color: #fff;
+        }
+
+        /* Lista de chats */
+        .chat-list {
+            list-style: none;
+            padding: 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #323739;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .chat-item:hover {
+            background-color: #323739;
+        }
+
+        .chat-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-name {
+            font-weight: bold;
+            color: #ece5dd;
+        }
+
+        .chat-last-message {
+            color: #a6a6a6;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <!-- Barra de búsqueda -->
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Buscar contactos" id="searchInput" oninput="searchUsers()">
+        </div>
+
+        <!-- Filtros de chat (opcional) -->
+        <div class="filters">
+            <span class="filter">Todos</span>
+            <span class="filter">No leídos</span>
+            <span class="filter">Favoritos</span>
+            <span class="filter">Grupos</span>
+        </div>
+
+        <!-- Lista de chats -->
+        <ul class="chat-list" id="chatList">
+            <!-- Ejemplo de chat estático (puede ser eliminado si todos los chats se generan dinámicamente) -->
+            <li class="chat-item" onclick="openChat(1)">
+                <img src="https://via.placeholder.com/40" alt="Avatar">
+                <div class="chat-info">
+                    <span class="chat-name">Juan Pérez</span>
+                    <p class="chat-last-message">Último mensaje recibido...</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // Función para buscar usuarios en la base de datos (conectada al backend)
+        async function searchUsers() {
+            const searchTerm = document.getElementById('searchInput').value;
+
+            // Realizar la solicitud GET a la API de búsqueda
+            const response = await fetch(`/api/search-users?q=${encodeURIComponent(searchTerm)}`);
+            const users = await response.json();
+
+            // Limpiar la lista de chats antes de agregar los resultados de búsqueda
+            const chatList = document.getElementById('chatList');
+            chatList.innerHTML = ''; // Limpiar la lista actual
+
+            // Añadir cada usuario encontrado a la lista de chats
+            users.forEach(user => {
+                const item = document.createElement('li');
+                item.className = 'chat-item';
+
+                // Si hay imagen, úsala; de lo contrario, muestra un avatar por defecto
+                const avatarUrl = user[2] ? user[2] : 'https://via.placeholder.com/40';
+
+                item.innerHTML = `
+      <img src="${avatarUrl}" alt="Avatar">
+      <div class="chat-info">
+        <span class="chat-name">${user[1]}</span> <!-- user[1] es el nombre del usuario -->
+      </div>
+    `;
+                item.onclick = () => openChat(user[0]); // user[0] es el ID del usuario
+                chatList.appendChild(item);
+            });
+        }
+
+        // Función para abrir el chat con un usuario específico
+        function openChat(userId) {
+            // Redirige a una URL de chat o abre el chat en la misma página
+            window.location.href = `chat.html?userId=${userId}`;
+        }
+
+    </script>
+
+    <!-- Fuente de iconos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+</body>
+
+</html>
