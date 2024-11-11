@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
-
 <body>
     <h1>Visualización en Tiempo Real de la Red Neuronal</h1>
-
+    
     <!-- Formulario para la configuración del modelo -->
     <div>
         <label>Número de Neuronas por Capa (separado por comas): </label>
@@ -27,7 +25,7 @@
     <!-- Gráfico de pérdida -->
     <h2>Gráfico de Pérdida</h2>
     <canvas id="lossChart" width="400" height="200"></canvas>
-
+    
     <!-- Gráfico de red neuronal -->
     <h2>Visualización de la Red Neuronal</h2>
     <div id="network"></div>
@@ -52,8 +50,8 @@
             options: {
                 responsive: true,
                 scales: {
-                    x: { title: { display: true, text: 'Épocas' } },
-                    y: { title: { display: true, text: 'Pérdida' } }
+                    x: { title: { display: true, text: 'Épocas' }},
+                    y: { title: { display: true, text: 'Pérdida' }}
                 }
             }
         });
@@ -128,7 +126,7 @@
         }
 
         // Escuchar las actualizaciones de entrenamiento desde el servidor
-        socket.on('training_update', function (data) {
+        socket.on('training_update', function(data) {
             const epoch = data.epoch;
             const loss = data.loss;
 
@@ -142,5 +140,4 @@
         });
     </script>
 </body>
-
 </html>

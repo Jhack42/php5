@@ -1,0 +1,61 @@
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/py/r/entregable02 (rama1-jhack)   
+$ vue --version
+@vue/cli 5.0.8
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/py/r/entregable02 (rama1-jhack)   
+$ vue create frontend
+(node:30344) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+
+Vue CLI v5.0.8
+? Please pick a preset: Default ([Vue 3] babel, eslint)
+
+
+Vue CLI v5.0.8
+✨  Creating project in C:\xampp_php5\htdocs\php5\py\r\entregable02\frontend.
+⚙️  Installing CLI plugins. This might take a while...
+
+
+added 819 packages, and audited 820 packages in 26s
+
+100 packages are looking for funding
+  run `npm fund` for details
+
+4 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+🚀  Invoking generators...
+📦  Installing additional dependencies...
+
+
+added 88 packages, and audited 908 packages in 5s
+
+112 packages are looking for funding
+  run `npm fund` for details
+
+4 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+⚓  Running completion hooks...
+
+📄  Generating README.md...
+
+🎉  Successfully created project frontend.
+👉  Get started with the following commands:
+
+ $ cd frontend
+ $ npm run serve
+
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/py/r/entregable02 (rama1-jhack)   
+$

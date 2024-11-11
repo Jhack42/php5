@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Red Neuronal en Tiempo Real</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        body { display: flex; }
+        #content { width: 70%; padding: 10px; }
+        #console { width: 30%; padding: 10px; border-left: 1px solid #ccc; overflow-y: auto; }
+        #preview { margin-top: 20px; }
+        .popup { display: none; position: fixed; top: 20px; right: 20px; padding: 10px; background: #ff4c4c; color: #fff; border-radius: 5px; }
+        .popup.success { background: #4caf50; }
+        .convertible { color: green; font-weight: bold; }
+        .non-convertible { color: red; }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>Visualización en Tiempo Real de la Red Neuronal</h1>
+
+        <h2>Cargar Archivo</h2>
+        <input type="file" id="dataFile" accept=".csv" />
+        <button onclick="uploadData()">Subir Archivo</button>
+
+        <div id="preview">
+            <h2>Previsualización de Datos</h2>
+            <div id="dataPreview"></div>
+        </div>
+
+        <h2>Preprocesamiento de Datos</h2>
+        <button onclick="cleanData()">Limpiar Datos</button>
+        <button onclick="convertToNumeric()">Convertir a Numérico</button>
+
+        <h2>Selecciona la Columna Objetivo</h2>
+        <select id="targetColumn"></select>
+
+        <h2>Configuración del Modelo</h2>
+        <label for="layers">Capas (separado por comas):</label>
+        <input type="text" id="layers" value="10,10,10">
+        <label for="epochs">Épocas:</label>
+        <input type="number" id="epochs" value="50">
+
+        <h3>Función de Activación:</h3>
+        <select id="activationFunction">
+            <option value="relu">ReLU</option>
+            <option value="sigmoid">Sigmoid</option>
+        </select>
+
+        <h3>Función de Pérdida:</h3>
+        <select id="lossFunction">
+            <option value="mse">MSE</option>
+            <option value="mae">MAE</option>
+        </select>
+        <button onclick="startTraining()">Iniciar Entrenamiento</button>
+
+        <h2>Gráfico de Pérdida</h2>
+        <canvas id="lossChart" width="400" height="200"></canvas>
+
+        <h2>Visualización de la Red Neuronal</h2>
+        <div id="network"></div>
+
+        <div id="popup" class="popup"></div>
+    </div>
+
+    <div id="console">
+        <h2>Consola</h2>
+        <div id="consoleOutput"></div>
+    </div>
+
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+        let lossChart, svg;
+
+        function displayPopup(message, success = false) {
+            const popup = document.getElementById('popup');
+            popup.textContent = message;
+            popup.className = `popup ${success ? 'success' : ''}`;
+            popup.style.display = 'block';
+            setTimeout(() => popup.style.display = 'none', 3000);
+        }
+
+        function logToConsole(message) {
+            const consoleOutput = document.getElementById('consoleOutput');
+            consoleOutput.innerHTML += `<p>${message}</p>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function uploadData() {
+            const fileInput = document.getElementById('dataFile').files[0];
+            if (!fileInput) {
+                displayPopup('Por favor selecciona un archivo .csv', false);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = e.target.result;
+                socket.emit('upload_data', data);
+            };
+            reader.readAsText(fileInput);
+        }
+
+        function cleanData() {
+            socket.emit('clean_data');
+        }
+
+        function convertToNumeric() {
+            socket.emit('convert_numeric');
+        }
+
+        function startTraining() {
+            const layers = document.getElementById('layers').value.split(',').map(Number);
+            const epochs = parseInt(document.getElementById('epochs').value);
+            const activation = document.getElementById('activationFunction').value;
+            const loss = document.getElementById('lossFunction').value;
+            const targetColumn = document.getElementById('targetColumn').value;
+            socket.emit('start_training', { layers, epochs, activation, loss, target_column: targetColumn });
+        }
+
+        function setupLossChart() {
+            const ctx = document.getElementById('lossChart').getContext('2d');
+            lossChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Pérdida',
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Épocas' }},
+                        y: { title: { display: true, text: 'Pérdida' }}
+                    }
+                }
+            });
+        }
+
+        // Configuración de SVG para la visualización de la red neuronal
+        const layerSpacing = 150;
+        const neuronSpacing = 50;
+
+        function setupSVG(numLayers, maxNeurons) {
+            const svgWidth = (numLayers - 1) * layerSpacing + 200;
+            const svgHeight = maxNeurons * neuronSpacing + 100;
+
+            if (svg) svg.remove();
+            svg = d3.select("#network")
+                .append("svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight)
+                .style("border", "1px solid #ccc");
+        }
+
+        function renderNetwork(weights) {
+            const numLayers = weights.length + 1;
+            const maxLayerNeurons = Math.max(...weights.map(l => l.length), 2);
+            setupSVG(numLayers, maxLayerNeurons);
+
+            const lines = svg.selectAll("line")
+                .data(weights.flatMap((layer, layerIndex) =>
+                    layer.flatMap((neuronWeights, neuronIndex) =>
+                        neuronWeights.map((weight, nextNeuronIndex) => ({
+                            x1: 100 + layerIndex * layerSpacing,
+                            y1: 50 + neuronIndex * neuronSpacing,
+                            x2: 100 + (layerIndex + 1) * layerSpacing,
+                            y2: 50 + nextNeuronIndex * neuronSpacing,
+                            weight: weight
+                        }))
+                    )
+                ));
+
+            lines.join(
+                enter => enter.append("line")
+                    .attr("x1", d => d.x1)
+                    .attr("y1", d => d.y1)
+                    .attr("x2", d => d.x2)
+                    .attr("y2", d => d.y2)
+                    .attr("stroke-width", d => Math.abs(d.weight) * 2)
+                    .attr("stroke", d => d.weight > 0 ? "blue" : "red")
+                    .attr("opacity", 0.7),
+                update => update
+                    .attr("x1", d => d.x1)
+                    .attr("y1", d => d.y1)
+                    .attr("x2", d => d.x2)
+                    .attr("y2", d => d.y2)
+                    .attr("stroke-width", d => Math.abs(d.weight) * 2)
+                    .attr("stroke", d => d.weight > 0 ? "blue" : "red"),
+                exit => exit.remove()
+            );
+        }
+
+        socket.on('data_uploaded', function(data) {
+            displayPopup(data.message, true);
+            logToConsole(data.message);
+            document.getElementById('dataPreview').innerHTML = data.preview;
+
+            const targetColumnSelect = document.getElementById('targetColumn');
+            targetColumnSelect.innerHTML = '';
+            data.columns.forEach(column => {
+                const option = document.createElement('option');
+                option.value = column;
+                option.textContent = column;
+                option.className = data.cleaned_columns.includes(column) ? 'convertible' : 'non-convertible';
+                targetColumnSelect.appendChild(option);
+            });
+        });
+
+        socket.on('training_update', function(data) {
+            lossChart.data.labels.push(data.epoch);
+            lossChart.data.datasets[0].data.push(data.loss);
+            lossChart.update();
+
+            renderNetwork(data.weights);
+        });
+
+        setupLossChart();
+    </script>
+</body>
+</html>
