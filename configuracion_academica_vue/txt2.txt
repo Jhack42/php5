@@ -1,0 +1,3 @@
+php artisan key:generate
+APP_KEY=base64:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=
+php artisan config:cache
