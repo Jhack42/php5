@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probar Modelo</title>
+</head>
+<body>
+    <h2>Prueba de Modelo Entrenado</h2>
+
+    <form id="testForm">
+        <label for="testData">Ingresa los datos de prueba (JSON):</label><br>
+        <textarea id="testData" rows="10" cols="50" placeholder='{"feature1": value, "feature2": value, ...}'></textarea><br>
+        <button type="button" onclick="testModel()">Probar Modelo</button>
+    </form>
+
+    <h3>Resultado de Predicción:</h3>
+    <div id="predictionResult"></div>
+
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        function testModel() {
+            const testData = document.getElementById('testData').value;
+            try {
+                const parsedData = JSON.parse(testData);
+                socket.emit('test_model', parsedData);
+            } catch (error) {
+                document.getElementById('predictionResult').innerHTML = "Error en el formato JSON";
+            }
+        }
+
+        socket.on('test_result', function(data) {
+            document.getElementById('predictionResult').innerHTML = `Predicción: ${data.prediction}`;
+        });
+
+        socket.on('test_error', function(data) {
+            document.getElementById('predictionResult').innerHTML = `Error: ${data.message}`;
+        });
+    </script>
+</body>
+</html>

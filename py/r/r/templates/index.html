@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Red Neuronal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <style>
+        body { display: flex; }
+        #content { width: 70%; padding: 10px; }
+        #console { width: 30%; padding: 10px; border-left: 1px solid #ccc; overflow-y: auto; }
+        #preview { margin-top: 20px; }
+        .popup { display: none; position: fixed; top: 20px; right: 20px; padding: 10px; background: #ff4c4c; color: #fff; border-radius: 5px; }
+        .popup.success { background: #4caf50; }
+        .convertible { color: green; font-weight: bold; }
+        .non-convertible { color: red; }
+
+        .modal-content {
+            width: 80%;
+            height: 80%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-warning {
+            background-color: #f0ad4e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .btn-warning:hover {
+            background-color: #ec971f;
+        }
+        .mt-3 {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Botón para abrir el modal de prueba de modelo -->
+        <button onclick="openTestModal()" class="btn btn-warning mt-3">Probar Modelo</button>
+
+        <!-- Modal -->
+<!-- Modal -->
+<div id="testModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span onclick="closeTestModal()" class="close">&times;</span>
+        <iframe src="test_model.html" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+</div>
+
+
+        <h1 class="text-center">Visualización en Tiempo Real de la Red Neuronal</h1>
+
+        <h2>Cargar Archivo</h2>
+        <div class="mb-3">
+            <input type="file" id="dataFile" accept=".csv" class="form-control" />
+            <button onclick="uploadData()" class="btn btn-primary mt-2">Subir Archivo</button>
+        </div>
+
+        <div id="preview">
+            <h2>Previsualización de Datos</h2>
+            <div id="dataPreview"></div>
+        </div>
+
+        <h2>Preprocesamiento de Datos</h2>
+        <button onclick="cleanData()" class="btn btn-secondary">Limpiar Datos</button>
+        <button onclick="convertToNumeric()" class="btn btn-secondary">Convertir a Numérico</button>
+
+        <h2>Selecciona la Columna Objetivo</h2>
+        <select id="targetColumn" class="form-select mb-3"></select>
+
+        <h2>Configuración del Modelo</h2>
+        <div class="row">
+            <div class="col">
+                <label for="layers" class="form-label">Capas (separadas por comas):</label>
+                <input type="text" id="layers" class="form-control" value="10,10,10">
+            </div>
+            <div class="col">
+                <label for="epochs" class="form-label">Épocas:</label>
+                <input type="number" id="epochs" class="form-control" value="50">
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <label for="activationFunction" class="form-label">Función de Activación:</label>
+                <select id="activationFunction" class="form-select">
+                    <option value="relu">ReLU</option>
+                    <option value="sigmoid">Sigmoid</option>
+                </select>
+            </div>
+            <div class="col">
+                <label for="lossFunction" class="form-label">Función de Pérdida:</label>
+                <select id="lossFunction" class="form-select">
+                    <option value="mse">MSE</option>
+                    <option value="mae">MAE</option>
+                </select>
+            </div>
+        </div>
+
+        <button onclick="startTraining()" class="btn btn-success mt-3">Iniciar Entrenamiento</button>
+
+        <h2 class="mt-4">Gráfico de Pérdida</h2>
+        <canvas id="lossChart" width="400" height="200"></canvas>
+
+        <h2>Visualización de la Red Neuronal</h2>
+        <div id="network"></div>
+
+        <div id="popup" class="popup"></div>
+    </div>
+
+    <div id="console" class="container mt-4">
+        <h2>Consola</h2>
+        <div id="consoleOutput"></div>
+    </div>
+
+    <script>
+                function openTestModal() {
+            document.getElementById("testModal").style.display = "flex";
+        }
+
+        function closeTestModal() {
+            document.getElementById("testModal").style.display = "none";
+        }
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+        let lossChart, svg;
+
+        function displayPopup(message, success = false) {
+            const popup = document.getElementById('popup');
+            popup.textContent = message;
+            popup.className = `popup ${success ? 'success' : ''}`;
+            popup.style.display = 'block';
+            setTimeout(() => popup.style.display = 'none', 3000);
+        }
+
+        function logToConsole(message) {
+            const consoleOutput = document.getElementById('consoleOutput');
+            consoleOutput.innerHTML += `<p>${message}</p>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function uploadData() {
+            const fileInput = document.getElementById('dataFile').files[0];
+            if (!fileInput) {
+                displayPopup('Por favor selecciona un archivo .csv', false);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = e.target.result;
+                socket.emit('upload_data', data);
+            };
+            reader.readAsText(fileInput);
+        }
+
+        function cleanData() {
+            socket.emit('clean_data');
+        }
+
+        function convertToNumeric() {
+            socket.emit('convert_numeric');
+        }
+
+        function startTraining() {
+            const layers = document.getElementById('layers').value.split(',').map(Number);
+            const epochs = parseInt(document.getElementById('epochs').value);
+            const activation = document.getElementById('activationFunction').value;
+            const loss = document.getElementById('lossFunction').value;
+            const targetColumn = document.getElementById('targetColumn').value;
+            socket.emit('start_training', { layers, epochs, activation, loss, target_column: targetColumn });
+        }
+
+        function setupLossChart() {
+            const ctx = document.getElementById('lossChart').getContext('2d');
+            lossChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Pérdida',
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Épocas' }},
+                        y: { title: { display: true, text: 'Pérdida' }}
+                    }
+                }
+            });
+        }
+
+        const layerSpacing = 150;
+        const neuronSpacing = 50;
+
+        function setupSVG(numLayers, maxNeurons, featureNames) {
+            const svgWidth = (numLayers - 1) * layerSpacing + 200;
+            const svgHeight = maxNeurons * neuronSpacing + 100;
+
+            if (svg) svg.remove();
+            svg = d3.select("#network")
+                .append("svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight)
+                .style("border", "1px solid #ccc");
+
+            // Mostrar nombres de las características en la capa de entrada
+            svg.selectAll("text")
+                .data(featureNames)
+                .enter()
+                .append("text")
+                .attr("x", 10)
+                .attr("y", (d, i) => 50 + i * neuronSpacing)
+                .text(d => d)
+                .style("font-size", "12px");
+        }
+
+        function renderNetwork(weights, featureNames) {
+            const numLayers = weights.length + 1;
+            const maxLayerNeurons = Math.max(...weights.map(l => l.length), 2);
+            setupSVG(numLayers, maxLayerNeurons, featureNames);
+
+            const lines = svg.selectAll("line")
+                .data(weights.flatMap((layer, layerIndex) =>
+                    layer.flatMap((neuronWeights, neuronIndex) =>
+                        neuronWeights.map((weight, nextNeuronIndex) => ({
+                            x1: 100 + layerIndex * layerSpacing,
+                            y1: 50 + neuronIndex * neuronSpacing,
+                            x2: 100 + (layerIndex + 1) * layerSpacing,
+                            y2: 50 + nextNeuronIndex * neuronSpacing,
+                            weight: weight
+                        }))
+                    )
+                ));
+
+            lines.join(
+                enter => enter.append("line")
+                    .attr("x1", d => d.x1)
+                    .attr("y1", d => d.y1)
+                    .attr("x2", d => d.x2)
+                    .attr("y2", d => d.y2)
+                    .attr("stroke-width", d => Math.abs(d.weight) * 2)
+                    .attr("stroke", d => d.weight > 0 ? "blue" : "red")
+                    .attr("opacity", 0.7),
+                update => update
+                    .attr("x1", d => d.x1)
+                    .attr("y1", d => d.y1)
+                    .attr("x2", d => d.x2)
+                    .attr("y2", d => d.y2)
+                    .attr("stroke-width", d => Math.abs(d.weight) * 2)
+                    .attr("stroke", d => d.weight > 0 ? "blue" : "red"),
+                exit => exit.remove()
+            );
+        }
+
+        socket.on('data_uploaded', function(data) {
+            displayPopup(data.message, true);
+            logToConsole(data.message);
+            document.getElementById('dataPreview').innerHTML = data.preview;
+
+            const targetColumnSelect = document.getElementById('targetColumn');
+            targetColumnSelect.innerHTML = '';
+            data.columns.forEach(column => {
+                const option = document.createElement('option');
+                option.value = column;
+                option.textContent = column;
+                option.className = data.cleaned_columns.includes(column) ? 'convertible' : 'non-convertible';
+                targetColumnSelect.appendChild(option);
+            });
+        });
+
+        socket.on('training_update', function(data) {
+            lossChart.data.labels.push(data.epoch);
+            lossChart.data.datasets[0].data.push(data.loss);
+            lossChart.update();
+
+            renderNetwork(data.weights, data.feature_names);
+        });
+
+        setupLossChart();
+    </script>
+</body>
+</html>
