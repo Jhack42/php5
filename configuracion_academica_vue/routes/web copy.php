@@ -25,3 +25,11 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+Route::get('/test-oracle', function () {
+    try {
+        DB::connection()->getPdo();
+        return 'Conexión con Oracle exitosa.';
+    } catch (\Exception $e) {
+        return 'Error conectando a Oracle: ' . $e->getMessage();
+    }
+});
