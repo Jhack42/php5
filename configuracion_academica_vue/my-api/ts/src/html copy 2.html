@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Mejorado</title>
+  
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+      margin: 0;
+    }
+    
+    #chatWindow {
+      width: 90%;
+      max-width: 600px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    h1 {
+      background-color: #4a90e2;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      margin: 0;
+    }
+    
+    #messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+    
+    #messageInput {
+      width: calc(100% - 60px);
+      padding: 10px;
+      border: none;
+      outline: none;
+      border-top: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    .message {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .user-icon {
+      font-size: 24px;
+      color: #4a90e2;
+      margin-right: 10px;
+    }
+
+    .message-content {
+      background: #f0f0f0;
+      border-radius: 8px;
+      padding: 10px;
+      max-width: 80%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-info {
+      font-size: 12px;
+      color: #888;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .check-icon {
+      color: #4a90e2;
+      font-size: 14px;
+    }
+
+    #sendMessage {
+      width: 50px;
+      border: none;
+      background: #4a90e2;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    #sendMessage:hover {
+      background: #357ab7;
+    }
+    
+    .message-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chatWindow">
+    <h1>Bienvenido al Chat</h1>
+    <div id="messages"></div>
+    <div style="display: flex; border-top: 1px solid #ddd;">
+      <input type="text" id="messageInput" placeholder="Escribe un mensaje..." />
+      <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    // Enviar mensaje
+    document.getElementById('sendMessage').onclick = () => {
+      const mensaje = document.getElementById('messageInput').value;
+      if (mensaje.trim()) {
+        socket.emit('mensaje', {
+          chatId: 1, // Usar el ID del chat actual
+          usuarioId: 1, // ID del usuario actual (ejemplo)
+          mensaje: mensaje
+        });
+        document.getElementById('messageInput').value = '';
+      }
+    };
+
+    // Recibir nuevo mensaje
+    socket.on('nuevoMensaje', (data) => {
+      const messagesDiv = document.getElementById('messages');
+      const item = `
+        <div class="message">
+          <i class="fas fa-user-circle user-icon"></i>
+          <div class="message-content">
+            <p>${data.mensaje}</p>
+            <div class="message-info">
+              <small>${data.usuarioId}</small>
+              <i class="fas fa-check-double check-icon"></i>
+            </div>
+          </div>
+        </div>`;
+      messagesDiv.insertAdjacentHTML('beforeend', item);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+  </script>
+</body>
+</html>
