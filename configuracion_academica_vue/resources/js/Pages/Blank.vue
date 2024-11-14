@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import EventosComponent from './proyecto/EventosComponent.vue';
-import CorreosComponent from './proyecto/CorreosComponent.vue';
+import EventosComponent from '../Components/proyecto/Eventos/EventosComponent.vue';
+import CorreosComponent from '../Components/proyecto/Correos/CorreosComponent.vue';
 
 export default {
   components: {

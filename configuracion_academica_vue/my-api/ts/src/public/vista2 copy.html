@@ -1,0 +1,218 @@
+<!-- Contenedor Principal -->
+<div class="main-container">
+    <!-- Sidebar con filtros -->
+    <aside class="sidebar">
+        <div class="filter-section">
+            <h2>Configuración Académica</h2>
+            <p id="resultados">Resultados (0)</p>
+
+            <input type="text" placeholder="Búsqueda..." class="search-bar">
+
+            <!-- Filtro Universidad -->
+            <div id="universidad-filter" class="filter-category">
+                <h3>Universidad</h3>
+                <ul>
+                    <li>
+                        <label>
+                            <input type="checkbox" id="universidad-checkbox"> Universidad
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Filtro Facultades -->
+            <div id="facultades-filter" class="filter-category" style="display: none;">
+                <h3>Facultades</h3>
+                <ul id="facultades-list"></ul>
+            </div>
+
+            <!-- Filtro Especialidades -->
+            <div id="especialidades-filter" class="filter-category" style="display: none;">
+                <h3>Especialidades</h3>
+                <ul id="especialidades-list"></ul>
+            </div>
+
+            <!-- Otros filtros -->
+            <div class="filter-category">
+                <h3>Periodo</h3>
+                <input type="text" id="periodo-filter" placeholder="Ej: 20241">
+            </div>
+
+            <div class="filter-category">
+                <h3>Fecha</h3>
+                <input type="date" id="fecha-inicio">
+                <input type="date" id="fecha-fin">
+            </div>
+
+            <div class="filter-category">
+                <h3>Medio</h3>
+                <select id="medio-filter">
+                    <option value="">Selecciona un medio</option>
+                    <option value="Comunicación Interna">Comunicación Interna</option>
+                    <option value="Externa">Externa</option>
+                </select>
+            </div>
+
+            <div class="filter-category">
+                <h3>Responsable</h3>
+                <select id="responsable-filter">
+                    <option value="">Selecciona un responsable</option>
+                    <option value="Departamento de Innovación">Departamento de Innovación</option>
+                </select>
+            </div>
+
+            <div class="filter-category">
+                <h3>Procesa</h3>
+                <select id="procesa-filter">
+                    <option value="">Selecciona un proceso</option>
+                    <option value="Equipo de Procesos">Equipo de Procesos</option>
+                </select>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal con Tabla -->
+    <section class="content">
+        <div class="results-header">
+            <select name="mes" id="mes-select">
+                <option value="tabla">Tabla</option>
+                <option value="calendario">Calendario</option>
+            </select>
+        </div>
+
+        <!-- Tabla de resultados -->
+        <div class="container" id="aqui_se_va_a_contruir_la_tabla"></div>
+
+        <!-- Paginación -->
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">&raquo;</a>
+        </div>
+    </section>
+</div>
+
+<script>
+    let data = [];
+    let filters = {
+        universidad: false,
+        facultades: [],
+        especialidades: [],
+        periodo: '',
+        fechaInicio: '',
+        fechaFin: '',
+        medio: '',
+        responsable: '',
+        procesa: ''
+    };
+
+    async function loadTable() {
+        try {
+            // Llamadas a las APIs para obtener las columnas y los datos
+            const responseColumns = await fetch('http://localhost:3000/api/data/tablas');
+            const columnsData = await responseColumns.json();
+            const responseActivities = await fetch('http://localhost:3000/api/data/para-la-vita1');
+            const activitiesData = await responseActivities.json();
+            data = activitiesData; // Guardar los datos originales
+            updateTable(columnsData[0], data);
+            updateFilters(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function updateTable(columns, activities) {
+        const container = document.getElementById('aqui_se_va_a_contruir_la_tabla');
+        const filteredActivities = filterActivities(activities);
+
+        // Actualizar el número de resultados
+        document.getElementById('resultados').innerText = `Resultados (${filteredActivities.length})`;
+
+        // Crear la tabla
+        const table = document.createElement('table');
+        table.classList.add('results-table');
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        Object.keys(columns).forEach(col => {
+            if (col.startsWith('olumna')) {
+                const th = document.createElement('th');
+                th.textContent = columns[col];
+                headerRow.appendChild(th);
+            }
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        filteredActivities.forEach(activity => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${activity.periodo}</td>
+                <td>${activity.codigo_actividad}</td>
+                <td>${activity.fullcalendar.descripcion}</td>
+                <td>${new Date(activity.fullcalendar.fecha_inicio).toLocaleDateString()}</td>
+                <td>${new Date(activity.fullcalendar.fecha_fin).toLocaleDateString()}</td>
+                <td>${activity.estado}</td>
+                <td>${activity.jerarquia.nivel}</td>
+                <td>${activity.medio.nombre}</td>
+                <td>${activity.responsable.nombre}</td>
+                <td>${activity.procesa.nombre}</td>
+                <td>${activity.observacion}</td>
+                <td><button>Opciones</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+
+        container.innerHTML = '';
+        container.appendChild(table);
+    }
+
+    function updateFilters(activities) {
+        // Mostrar las facultades y especialidades como listas
+        const facultades = [...new Set(activities.map(a => a.facultad))];
+        const especialidades = [...new Set(activities.map(a => a.especialidad))];
+
+        const facultadesList = document.getElementById('facultades-list');
+        facultadesList.innerHTML = facultades.map(f => `<li><label><input type="checkbox" value="${f}"> ${f}</label></li>`).join('');
+        const especialidadesList = document.getElementById('especialidades-list');
+        especialidadesList.innerHTML = especialidades.map(e => `<li><label><input type="checkbox" value="${e}"> ${e}</label></li>`).join('');
+
+        // Mostrar filtros condicionalmente
+        document.getElementById('universidad-checkbox').addEventListener('change', function () {
+            const checked = this.checked;
+            filters.universidad = checked;
+            toggleFilterVisibility();
+        });
+    }
+
+    function toggleFilterVisibility() {
+        const facultadesFilter = document.getElementById('facultades-filter');
+        const especialidadesFilter = document.getElementById('especialidades-filter');
+
+        if (filters.universidad) {
+            facultadesFilter.style.display = 'block';
+            especialidadesFilter.style.display = 'block';
+        } else {
+            facultadesFilter.style.display = 'none';
+            especialidadesFilter.style.display = 'none';
+        }
+    }
+
+    function filterActivities(activities) {
+        return activities.filter(a => {
+            // Filtrar por universidad, facultad, especialidad, periodo, fecha, medio, responsable, procesa
+            return (!filters.universidad || a.jerarquia.nivel === 'Universidad') &&
+                (filters.facultades.length === 0 || filters.facultades.includes(a.facultad)) &&
+                (filters.especialidades.length === 0 || filters.especialidades.includes(a.especialidad)) &&
+                (!filters.periodo || a.periodo === filters.periodo) &&
+                (!filters.fechaInicio || new Date(a.fullcalendar.fecha_inicio) >= new Date(filters.fechaInicio)) &&
+                (!filters.fechaFin || new Date(a.fullcalendar.fecha_fin) <= new Date(filters.fechaFin)) &&
+                (!filters.medio || a.medio.nombre === filters.medio) &&
+                (!filters.responsable || a.responsable.nombre === filters.responsable) &&
+                (!filters.procesa || a.procesa.nombre === filters.procesa);
+        });
+    }

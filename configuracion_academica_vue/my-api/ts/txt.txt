@@ -1,0 +1,14 @@
+node dist/index.js
+
+ts-node src/index.ts
+
+
+
+npm install @types/express --save-dev
+npm update @types/express
+npm install typescript @types/express ts-node
+npm install express
+npm init -y
+
+
+npx ts-node src/index.ts
