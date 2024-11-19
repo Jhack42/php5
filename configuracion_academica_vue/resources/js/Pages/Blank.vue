@@ -9,6 +9,9 @@
                 <li :class="{ 'is-active': activeTab === 'email' }">
                     <a @click="setActiveTab('email')">Correo</a>
                 </li>
+                <li :class="{ 'is-active': activeTab === 'vista2' }">
+                    <a @click="setActiveTab('vista2')">vista2</a>
+                </li>
             </ul>
         </div>
 
@@ -21,6 +24,9 @@
             <div v-if="activeTab === 'email'">
                 <CorreosComponent />
             </div>
+            <div v-if="activeTab === 'vista2'">
+                <CorreosComponent />
+            </div>
         </div>
     </div>
 </template>
@@ -28,22 +34,24 @@
 <script>
 import EventosComponent from '../Components/proyecto/Eventos/EventosComponent.vue';
 import CorreosComponent from '../Components/proyecto/Correos/CorreosComponent.vue';
+import vista2 from '../Components/proyecto/Correos/CorreosComponent copy.vue';
 
 export default {
-  components: {
-    EventosComponent,
-    CorreosComponent,
-  },
-  data() {
-    return {
-      activeTab: 'events', // Pestaña activa por defecto
-    };
-  },
-  methods: {
-    setActiveTab(tab) {
-      this.activeTab = tab;
+    components: {
+        EventosComponent,
+        CorreosComponent,
+        vista2,
     },
-  },
+    data() {
+        return {
+            activeTab: 'events', // Pestaña activa por defecto
+        };
+    },
+    methods: {
+        setActiveTab(tab) {
+            this.activeTab = tab;
+        },
+    },
 };
 
 </script>
