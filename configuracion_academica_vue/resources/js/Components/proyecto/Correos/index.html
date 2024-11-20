@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facultades</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+</head>
+<style>
+    /* Reset and general styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+}
+
+h1, h3, h4 {
+  font-family: 'Arial', sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Header */
+.header {
+  background-color: #e3342f;
+  color: white;
+  padding: 16px;
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.btn {
+  background-color: white;
+  border: 1px solid #e3342f;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #e3342f;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #e3342f;
+  color: white;
+}
+
+i {
+  font-size: 14px;
+}
+
+/* Loading Spinner */
+.loading {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #e3342f;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Alert */
+.alert {
+  display: none;
+  background-color: #f8d7da;
+  border-left: 4px solid #e3342f;
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 8px;
+}
+
+.alert.error {
+  display: block;
+}
+
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.alert-title {
+  font-weight: bold;
+  color: #e3342f;
+}
+
+.alert-description {
+  color: #721c24;
+}
+
+/* Grid and cards */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.acronym {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e3342f;
+}
+
+.faculty-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.careers {
+  margin-top: 8px;
+  color: #4a4a4a;
+  font-size: 14px;
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+</style>
+<body>
+
+  <div class="min-h-screen bg-gray-100">
+    <div class="header">
+      <h1 class="title">FACULTADES</h1>
+    </div>
+
+    <div class="content">
+      <div class="buttons">
+        <button class="btn">
+          <i class="fas fa-cogs"></i> Configuración Académica
+        </button>
+        <button class="btn">
+          Actividades Académicas
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <button class="btn">
+          Calendario Académico
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <button class="btn">
+          Notificaciones
+          <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
+
+      <!-- Simulación de carga -->
+      <div class="loading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Error simulada -->
+      <div class="alert error">
+        <i class="fas fa-exclamation-circle"></i>
+        <div class="alert-content">
+          <h4 class="alert-title">Error</h4>
+          <p class="alert-description">Error al cargar las facultades</p>
+          <button class="btn" onclick="window.location.reload();">Intentar de nuevo</button>
+        </div>
+      </div>
+
+      <!-- Facultades -->
+      <div class="grid">
+        <div class="card">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/images%20(1).jfif-AaQF0eiqU1WOAgDryVkxZuL8h3G4v7.jpeg" alt="Facultad de Arquitectura" class="card-image">
+          <div class="card-body">
+            <div class="acronym">FAUA</div>
+            <h3 class="faculty-name">FACULTAD DE ARQUITECTURA, URBANISMO Y ARTES</h3>
+            <ul class="careers">
+              <li>Arquitectura</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/images%20(1).jfif-AaQF0eiqU1WOAgDryVkxZuL8h3G4v7.jpeg" alt="Facultad de Ingeniería Civil" class="card-image">
+          <div class="card-body">
+            <div class="acronym">FIC</div>
+            <h3 class="faculty-name">FACULTAD DE INGENIERÍA CIVIL</h3>
+            <ul class="careers">
+              <li>Ingeniería Civil</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/images%20(1).jfif-AaQF0eiqU1WOAgDryVkxZuL8h3G4v7.jpeg" alt="Facultad de Ingeniería Geológica" class="card-image">
+          <div class="card-body">
+            <div class="acronym">FIGMM</div>
+            <h3 class="faculty-name">FACULTAD DE INGENIERÍA GEOLÓGICA, MINERA Y METALÚRGICA</h3>
+            <ul class="careers">
+              <li>Ingeniería Geológica</li>
+              <li>Ingeniería Metalúrgica</li>
+              <li>Ingeniería de Minas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
