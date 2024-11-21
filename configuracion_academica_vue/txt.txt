@@ -1,0 +1,398 @@
+ma1-jhack)
+$ php artisan serve
+PHP Warning:  PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\ext\oci8_12c (No se puede encontrar el m├│dulo especificado), C:\xampp\php\ext\php_oci8_12c.dll (No se puede encontrar el m├│dulo especificado)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\ext\oci8_12c (No se puede encontrar el m├│dulo especificado), C:\xampp\php\ext\php_oci8_12c.dll (No se puede encontrar el m├│dulo especificado)) in Unknown on line 0
+
+In ProviderRepository.php line 206:
+
+  Class "Laravel\Breeze\BreezeServiceProvider" not found
+
+
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/configuracion_academica_vue (rama1-jhack)
+$ php artisan breeze:install vue --typescript
+PHP Warning:  PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp
+\php\ext\oci8_12c (No se puede encontrar el m├│dulo especificado), C:\xampp\php\ext\p
+hp_oci8_12c.dll (No se puede encontrar el m├│dulo especificado)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\
+ext\oci8_12c (No se puede encontrar el m├│dulo especificado), C:\xampp\php\ext\php_oc
+i8_12c.dll (No se puede encontrar el m├│dulo especificado)) in Unknown on line 0
+
+In ProviderRepository.php line 206:
+
+  Class "Laravel\Breeze\BreezeServiceProvider" not found
+
+
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/configuracion_academica_vue (rama1-jhack)
+$ composer require laravel/breeze --dev
+PHP Warning:  PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\ext\oci8_12c (No se puede encontrar el m├│dulo especificado), C:\xampp\php\ext\php_oci8_12c.dll (No se puede encontrar el m├│dulo especificado)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\ext\oci8_12c (No se puede encontrar el m├│dulo especificado), C:\xampp\php\ext\php_oci8_12c.dll (No se puede encontrar el m├│dulo especificado)) in Unknown on line 0
+./composer.json has been updated
+Running composer update laravel/breeze
+Loading composer repositories with package information
+Updating dependencies
+Nothing to modify in lock file
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Nothing to install, update or remove
+Generating optimized autoload files
+> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+> @php artisan package:discover --ansi
+
+Warning: PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\ext\oci8_12c (No se puede encontrar el módulo especificado), C:\xampp\php\ext\php_oci8_12c.dll (No se puede encontrar el módulo especificado)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\ext\oci8_12c (No se puede encontrar el módulo especificado), C:\xampp\php\ext\php_oci8_12c.dll (No se puede encontrar el módulo especificado)) in Unknown on line 0
+
+   INFO  Discovering packages.
+
+  laravel/breeze ............................................................. DONE
+  laravel/pail ............................................................... DONE
+  laravel/sail ............................................................... DONE
+  laravel/tinker ............................................................. DONE
+  nesbot/carbon .............................................................. DONE
+  nunomaduro/collision ....................................................... DONE
+  nunomaduro/termwind ........................................................ DONE
+
+78 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+> @php artisan vendor:publish --tag=laravel-assets --ansi --force
+
+Warning: PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\ext\oci8_12c (No se puede encontrar el módulo especificado), C:\xampp\php\ext\php_oci8_12c.dll (No se puede encontrar el módulo especificado)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'oci8_12c' (tried: C:\xampp\php\ext\oci8_12c (No se puede encontrar el módulo especificado), C:\xampp\php\ext\php_oci8_12c.dll (No se puede encontrar el módulo especificado)) in Unknown on line 0
+
+   INFO  No publishable resources for tag [laravel-assets].
+
+No security vulnerability advisories found.
+Using version ^2.2 for laravel/breeze
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/configuracion_academica_vue (rama1-jhack)
+$ composer require laravel/breeze --dev
+./composer.json has been updated
+Running composer update laravel/breeze
+Loading composer repositories with package information
+Updating dependencies
+Nothing to modify in lock file
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Nothing to install, update or remove
+Generating optimized autoload files
+> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+> @php artisan package:discover --ansi
+
+   INFO  Discovering packages.
+
+  laravel/breeze ............................................................. DONE
+  laravel/pail ............................................................... DONE
+  laravel/sail ............................................................... DONE
+  laravel/tinker ............................................................. DONE
+  nesbot/carbon .............................................................. DONE
+  nunomaduro/collision ....................................................... DONE
+  nunomaduro/termwind ........................................................ DONE
+
+78 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+> @php artisan vendor:publish --tag=laravel-assets --ansi --force
+
+   INFO  No publishable resources for tag [laravel-assets].
+
+No security vulnerability advisories found.
+Using version ^2.2 for laravel/breeze
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/configuracion_academica_vue (rama1-jhack)
+$ php artisan breeze:install vue --typescript
+./composer.json has been updated
+Running composer update inertiajs/inertia-laravel laravel/sanctum tightenco/ziggy
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 3 installs, 0 updates, 0 removals
+  - Locking inertiajs/inertia-laravel (v1.3.0)
+  - Locking laravel/sanctum (v4.0.3)
+  - Locking tightenco/ziggy (v2.4.0)
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Package operations: 3 installs, 0 updates, 0 removals
+INFORMACIÓN: no se pudo encontrar ningún archivo para los patrones dados.
+  - Installing inertiajs/inertia-laravel (v1.3.0): Extracting archive
+  - Installing laravel/sanctum (v4.0.3): Extracting archive
+  - Installing tightenco/ziggy (v2.4.0): Extracting archive
+1 package suggestions were added by new dependencies, use `composer suggest` to see d
+etails.
+Generating optimized autoload files
+> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+> @php artisan package:discover --ansi
+
+   INFO  Discovering packages.
+
+  inertiajs/inertia-laravel .................................................. DONE
+  laravel/breeze ............................................................. DONE
+  laravel/pail ............................................................... DONE
+  laravel/sail ............................................................... DONE
+  laravel/sanctum ............................................................ DONE
+  laravel/tinker ............................................................. DONE
+  nesbot/carbon .............................................................. DONE
+  nunomaduro/collision ....................................................... DONE
+  nunomaduro/termwind ........................................................ DONE
+  tightenco/ziggy ............................................................ DONE
+
+79 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+> @php artisan vendor:publish --tag=laravel-assets --ansi --force
+
+   INFO  No publishable resources for tag [laravel-assets].
+
+No security vulnerability advisories found.
+   INFO  Installing and building Node dependencies.
+
+
+added 218 packages, and audited 219 packages in 17s
+
+51 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> build
+> vue-tsc && vite build
+
+    vite v5.4.11 building for production...
+    transforming...
+    ✓ 180 modules transformed.
+rendering chunks...
+    computing gzip size...
+public/build/manifest.json
+               9.59 kB │ gzip:  1.02 kB
+public/build/assets/app-P-aAbCdG.css
+              33.75 kB │ gzip:  6.54 kB
+public/build/assets/_plugin-vue_export-helper-DlAUqK2U.js
+               0.09 kB │ gzip:  0.10 kB
+public/build/assets/DeleteUserForm-Dgpd05Pb.js
+               0.25 kB │ gzip:  0.18 kB
+public/build/assets/UpdatePasswordForm-BbR-lY0W.js
+               0.29 kB │ gzip:  0.21 kB
+public/build/assets/UpdateProfileInformationForm-CsFjHyix.js
+               0.30 kB │ gzip:  0.22 kB
+public/build/assets/PrimaryButton-BwGcvNNd.js
+               0.55 kB │ gzip:  0.38 kB
+public/build/assets/GuestLayout.vue_vue_type_script_setup_true_lang-BUKSLn-E.js
+               0.57 kB │ gzip:  0.40 kB
+public/build/assets/Dashboard-DOLOXDDo.js
+               0.77 kB │ gzip:  0.49 kB
+public/build/assets/TextInput.vue_vue_type_script_setup_true_lang-D2Rn1kXH.js
+               1.11 kB │ gzip:  0.62 kB
+public/build/assets/ConfirmPassword-CkM9weML.js
+               1.42 kB │ gzip:  0.80 kB
+public/build/assets/Edit-CiSd92vR.js
+               1.42 kB │ gzip:  0.69 kB
+public/build/assets/ForgotPassword-CX92IIuq.js
+               1.59 kB │ gzip:  0.90 kB
+public/build/assets/VerifyEmail-C5ikhFl7.js
+               1.63 kB │ gzip:  0.94 kB
+public/build/assets/ResetPassword-C-w_5QSK.js
+               2.11 kB │ gzip:  0.86 kB
+public/build/assets/UpdateProfileInformationForm.vue_vue_type_script_setup_true_lang-
+BuGPUIEw.js    2.55 kB │ gzip:  1.20 kB
+public/build/assets/UpdatePasswordForm.vue_vue_type_script_setup_true_lang-DG8eFRM9.j
+s              2.60 kB │ gzip:  1.02 kB
+public/build/assets/Register-BJ43PHnY.js
+               2.62 kB │ gzip:  1.01 kB
+public/build/assets/Login-DYjAxdD2.js
+               2.77 kB │ gzip:  1.29 kB
+public/build/assets/ApplicationLogo-B_d2rxA4.js
+               3.24 kB │ gzip:  1.43 kB
+public/build/assets/DeleteUserForm.vue_vue_type_script_setup_true_lang-Brpzk24p.js
+               5.18 kB │ gzip:  2.14 kB
+public/build/assets/AuthenticatedLayout.vue_vue_type_script_setup_true_lang-BT_jpN33.
+js             6.81 kB │ gzip:  2.29 kB
+public/build/assets/Welcome-D5vibLzL.js
+              18.71 kB │ gzip:  6.17 kB
+public/build/assets/app-mWf5dXQH.js
+             217.13 kB │ gzip: 79.08 kB
+✓ built in 1.39s
+
+
+   INFO  Breeze scaffolding installed successfully.
+
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/configuracion_academica_vue (rama1-jhack)
+$ npm install
+
+up to date, audited 219 packages in 762ms
+
+51 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/configuracion_academica_vue (rama1-jhack)
+$ npm run dev
+
+> dev
+> vite
+
+
+  VITE v5.4.11  ready in 247 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+  LARAVEL v11.31.0  plugin v1.0.6
+
+  ➜  APP_URL: http://localhost
+
+
+Jhack Alberth@Jhack MINGW64 /c/xampp_php5/htdocs/php5/configuracion_academica_vue (rama1-jhack)
+$ npm run dev & php artisan serve
+[1] 848
+
+> dev
+> vite
+
+
+  VITE v5.4.11  ready in 250 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+  forking is not supported on this platform
+
+   INFO  Server running on [http://127.0.0.1:8000].
+
+  Press Ctrl+C to stop the server
+
+
+  LARAVEL v11.31.0  plugin v1.0.6
+
+  ➜  APP_URL: http://localhost
+  2024-11-13 08:14:46 / ..................................................... ~ 2s
+  2024-11-13 08:14:49 ................................................... ~ 1m 17s
+  2024-11-13 08:20:24 / ..................................................... ~ 1s
+8:21:29 AM [vite] .env changed, restarting server...
+
+   INFO  Environment modified. Restarting server...
+
+8:21:29 AM [vite] server restarted.
+  2024-11-13 08:20:25 .................................................... ~ 1m 4s
+
+  LARAVEL v11.31.0  plugin v1.0.6
+
+  ➜  APP_URL: http://localhost
+  forking is not supported on this platform
+
+   INFO  Server running on [http://127.0.0.1:8000].
+
+  Press Ctrl+C to stop the server
+
+  2024-11-13 08:21:30 / ............................................... ~ 510.95ms
+  2024-11-13 08:21:30 / .................................................... ~ 30s
+  2024-11-13 08:22:00 /favicon.ico .................................... ~ 517.41ms
+  2024-11-13 08:22:03 /register ......................................... ~ 0.15ms
+  2024-11-13 08:22:03 /favicon.ico ...................................... ~ 0.09ms
+  2024-11-13 08:22:05 /favicon.ico ...................................... ~ 0.20ms
+  2024-11-13 08:22:13 /favicon.ico ...................................... ~ 0.18ms
+  2024-11-13 08:22:13 ................................................... ~ 2m 15s
+8:24:47 AM [vite] full reload routes\web.php
+  2024-11-13 08:24:47 / ................................................. ~ 0.19ms
+  2024-11-13 08:24:47 /favicon.ico ...................................... ~ 0.82ms
+  2024-11-13 08:24:56 /test-oracle .................................... ~ 510.84ms
+  2024-11-13 08:24:56 /favicon.ico ...................................... ~ 0.07ms
+  2024-11-13 08:26:57 /test-oracle ...................................... ~ 0.18ms
+  2024-11-13 08:26:57 /favicon.ico ...................................... ~ 0.15ms
+  2024-11-13 08:26:58 /test-oracle ...................................... ~ 0.25ms
+  2024-11-13 08:26:58 /favicon.ico ...................................... ~ 1.04ms
+  2024-11-13 08:26:58 /test-oracle .................................... ~ 512.34ms
+  2024-11-13 08:26:58 /favicon.ico .................................... ~ 512.86ms
+  2024-11-13 08:26:58 /test-oracle ...................................... ~ 0.06ms
+  2024-11-13 08:26:58 /favicon.ico ...................................... ~ 0.56ms
+  2024-11-13 08:26:59 /test-oracle ...................................... ~ 0.13ms
+  2024-11-13 08:26:59 /favicon.ico ...................................... ~ 0.66ms
+  2024-11-13 08:26:59 /test-oracle .................................... ~ 508.62ms
+  2024-11-13 08:26:59 /favicon.ico ...................................... ~ 0.07ms
+8:29:53 AM [vite] .env changed, restarting server...
+8:29:53 AM [vite] server restarted.
+
+   INFO  Environment modified. Restarting server...
+
+
+  LARAVEL v11.31.0  plugin v1.0.6
+
+  ➜  APP_URL: http://localhost
+  forking is not supported on this platform
+
+   INFO  Server running on [http://127.0.0.1:8000].
+
+  Press Ctrl+C to stop the server
+
+  2024-11-13 08:30:16 /test-oracle .......................................... ~ 1s
+  2024-11-13 08:30:16 / ..................................................... ~ 7s
+8:30:56 AM [vite] .env changed, restarting server...
+8:30:56 AM [vite] server restarted.
+
+   INFO  Environment modified. Restarting server...
+
+
+  LARAVEL v11.31.0  plugin v1.0.6
+
+  ➜  APP_URL: http://localhost
+  forking is not supported on this platform
+
+   INFO  Server running on [http://127.0.0.1:8000].
+
+  Press Ctrl+C to stop the server
+
+  2024-11-13 08:30:56 / ............................................... ~ 511.54ms
+  2024-11-13 08:30:57 ................................................... ~ 1m 13s
+  2024-11-13 08:34:49 / ............................................... ~ 513.10ms
+  2024-11-13 08:34:49 / .................................................... ~ 42s
+8:35:56 AM [vite] .env changed, restarting server...
+8:35:56 AM [vite] server restarted.
+
+   INFO  Environment modified. Restarting server...
+
+
+  LARAVEL v11.31.0  plugin v1.0.6
+
+  ➜  APP_URL: http://localhost
+  forking is not supported on this platform
+
+   INFO  Server running on [http://127.0.0.1:8000].
+
+  Press Ctrl+C to stop the server
+
+  2024-11-13 08:35:56 / ............................................... ~ 512.68ms
+8:36:00 AM [vite] .env changed, restarting server...
+8:36:00 AM [vite] server restarted.
+
+  LARAVEL v11.31.0  plugin v1.0.6
+
+  ➜  APP_URL: http://localhost
+
+   INFO  Environment modified. Restarting server...
+
+  forking is not supported on this platform
+
+   INFO  Server running on [http://127.0.0.1:8000].
+
+  Press Ctrl+C to stop the server
+
+  2024-11-13 08:36:01 / ............................................... ~ 511.09ms
+8:36:18 AM [vite] .env changed, restarting server...
+8:36:18 AM [vite] server restarted.
+
+  LARAVEL v11.31.0  plugin v1.0.6
+
+  ➜  APP_URL: http://localhost
+
+   INFO  Environment modified. Restarting server...
+
+  forking is not supported on this platform
+
+   INFO  Server running on [http://127.0.0.1:8000].
+
+  Press Ctrl+C to stop the server
+
+  2024-11-13 08:36:19 / ............................................... ~ 512.83ms
+  2024-11-13 08:36:19 / .................................................... ~ 37s
