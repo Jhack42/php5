@@ -23,7 +23,14 @@
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.15",
+        "@fullcalendar/daygrid": "^6.1.15",
+        "@fullcalendar/list": "^6.1.15",
+        "@fullcalendar/multimonth": "^6.1.15",
+        "@fullcalendar/timegrid": "^6.1.15",
+        "@fullcalendar/vue3": "^6.1.15",
         "@vueuse/core": "^11.2.0",
+        "bootstrap": "^5.3.3",
         "eslint": "^9.15.0",
         "eslint-plugin-vue": "^9.31.0",
         "js-cookie": "^3.0.5",

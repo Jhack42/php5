@@ -19,7 +19,7 @@
 
   <script>
   import App from './App.vue';
-  import Tabla from './Tabla.vue';
+  import Tabla from './Calendario.vue';
 
   export default {
     name: 'Main',
