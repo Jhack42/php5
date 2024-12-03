@@ -2,38 +2,16 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
-use Inertia\Middleware;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
-class HandleInertiaRequests extends Middleware
+class VerifyCsrfToken extends Middleware
 {
     /**
-     * The root template that is loaded on the first page visit.
+     * Las rutas que deben omitir la verificación CSRF.
      *
-     * @var string
+     * @var array
      */
-    protected $rootView = 'app';
-
-    /**
-     * Determine the current asset version.
-     */
-    public function version(Request $request): ?string
-    {
-        return parent::version($request);
-    }
-
-    /**
-     * Define the props that are shared by default.
-     *
-     * @return array<string, mixed>
-     */
-    public function share(Request $request): array
-    {
-        return [
-            ...parent::share($request),
-            'auth' => [
-                'user' => $request->user(),
-            ],
-        ];
-    }
+    protected $except = [
+        'api/*', // Omite la verificación CSRF para todas las rutas de la API
+    ];
 }
