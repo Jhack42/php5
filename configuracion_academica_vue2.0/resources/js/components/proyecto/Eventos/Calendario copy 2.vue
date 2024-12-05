@@ -260,4 +260,104 @@ export default {
 </script>
 
 
-<style lang="scss" src="../../../../scss/calendar.scss"></style>
+<style scoped>
+.calendar-app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    padding: 16px;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: white;
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 300px;
+    border-right: 1px solid #e5e5e5;
+    padding: 16px;
+    overflow-y: auto;
+    background: #f9f9f9;
+}
+
+.mini-calendar {
+    margin-bottom: 24px;
+}
+
+.mini-calendar .header {
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.mini-calendar .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.mini-calendar .day {
+    text-align: center;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.mini-calendar .day.is-today {
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+}
+
+.mini-calendar .day.is-other-month {
+    color: lightgray;
+}
+
+.mini-calendar .event-indicator {
+    width: 5px;
+    height: 5px;
+    background-color: #007bff;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.calendar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.calendar-container {
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.calendar-toolbar {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-toolbar .button {
+    margin-right: 10px;
+}
+
+.calendar-title {
+    font-weight: bold;
+    margin: 0 10px;
+}
+</style>
