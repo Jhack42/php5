@@ -1,0 +1,33 @@
+C:\xampp\htdocs\sma-mesayuda-main\sma-mesayuda-main\resources\ts\pages\mesayuda\categorias.vue
+
+C:\xampp\htdocs\sma-mesayuda-main\sma-mesayuda-main\resources\ts\pages\mesayuda\CategoriaCrud.vue
+
+C:\xampp\htdocs\sma-mesayuda-main\sma-mesayuda-main\resources\ts\pages\mesayuda\SubCategoriaCrud.vue
+
+
+
+api.php
+
+use App\Http\Controllers\CategoriaController;
+
+Route::get('categoria', [CategoriaController::class, 'index']); // Obtener todas las categorías
+Route::post('categoria/create', [CategoriaController::class, 'create']);
+Route::put('categoria/update/{id}', [CategoriaController::class, 'update']);
+Route::delete('categoria/delete/{id}', [CategoriaController::class, 'delete']);
+
+
+use App\Http\Controllers\SubCategoriaController;
+
+Route::get('supcategoria', [SubCategoriaController::class, 'index']); // Obtener todas las categorías
+Route::post('supcategoria/nuevo', [SubCategoriaController::class, 'testNuevo']);
+Route::put('supcategoria/{id}/editar', [SubCategoriaController::class, 'editarSubCategoria']);
+Route::delete('supcategoria/{id}/eliminar', [SubCategoriaController::class, 'eliminar']);
+
+
+C:\xampp\htdocs\sma-mesayuda-main\sma-mesayuda-main\app\Http\Controllers\CategoriaController.php
+
+C:\xampp\htdocs\sma-mesayuda-main\sma-mesayuda-main\app\Http\Controllers\SubCategoriaController.php
+
+C:\xampp\htdocs\sma-mesayuda-main\sma-mesayuda-main\app\Models\Categoria.php
+
+C:\xampp\htdocs\sma-mesayuda-main\sma-mesayuda-main\app\Models\SubCategoria.php

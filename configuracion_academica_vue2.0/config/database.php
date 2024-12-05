@@ -62,6 +62,20 @@ return [
             ]) : [],
         ],
 
+       'oracle' => [
+    'driver'   => 'oracle',
+    'tns'      => env('DB_TNS', ''),
+    'host'     => env('DB_HOST', '127.0.0.1'),
+    'port'     => env('DB_PORT', '1521'),
+    'database' => env('DB_SID', 'XEPDB1'),
+    'username' => env('DB_USERNAME', 'php5'),
+    'password' => env('DB_PASSWORD', 'php5'),
+    'charset'  => 'AL32UTF8',
+],
+
+
+
+/*
         'oracle' => [
             'driver' => 'oracle',
             'tns' => env('DB_TNS'),
@@ -75,7 +89,7 @@ return [
             'prefix_schema' => env('DB_SCHEMA_PREFIX', ''),
             'edition' => env('DB_EDITION', 'ora$base'),
         ],
-
+*/
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
