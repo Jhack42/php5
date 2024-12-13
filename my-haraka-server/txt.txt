@@ -1,2 +1,3 @@
 haraka -c .
 
+C:\Windows\system32>sqlplus / as sysdba

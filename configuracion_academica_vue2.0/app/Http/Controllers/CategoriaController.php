@@ -2,124 +2,120 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categoria; // Importar el modelo
+use App\Models\Categoria;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class CategoriaController extends Controller
 {
-    public function index()
-    {
-        try {
-            // Obtener todas las categorías
-            $categorias = Categoria::all();
-
-            // Retornar las categorías en un formato estándar
-            return response()->json([
-                'message' => 'Categorías obtenidas correctamente',
-                'categorias' => $categorias,
-            ], 200);
-        } catch (\Exception $e) {
-            Log::error('Error al obtener categorías: '.$e->getMessage());
-
-            return response()->json(['message' => 'Error al obtener las categorías'], 500);
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+{
+    try {
+        $query = Categoria::query();
+        if ($request->has('active')) {
+            $query->where('is_active', $request->boolean('active'));
         }
+        if ($request->has('category')) {
+            $query->where('category', $request->category);
+        }
+        $items = $query->ordered()->get();
+
+        return response()->json($items);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('categories.create');
     }
 
-    // Crear una nueva categoría
-    public function create(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        try {
-            // Validar los datos de entrada
-            $request->validate([
-                'v_titulo' => 'required|string|max:50',
-            ]);
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'html_content' => 'nullable|string',
+            // Validate other fields as needed
+        ]);
 
-            // Crear la categoría
-            $categoria = Categoria::create($request->only(['v_titulo']));
+        $category = Categoria::create($validatedData);
 
-            return response()->json([
-                'message' => 'Categoría creada correctamente',
-                'categoria' => $categoria,
-            ], 201);
-        } catch (\Exception $e) {
-            Log::error('Error al crear categoría: '.$e->getMessage());
-
-            return response()->json(['message' => 'Error al crear la categoría'], 500);
-        }
+        return redirect()->route('categories.index')
+            ->with('success', 'Category created successfully.');
     }
 
-    // Editar una categoría existente
-    public function update(Request $request, $id)
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Categoria  $categoria
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Categoria $categoria)
     {
-        try {
-            // Validar los datos de entrada
-            $request->validate([
-                'v_titulo' => 'required|string|max:50',
-            ]);
-
-            // Buscar la categoría por su ID
-            $categoria = Categoria::find($id);
-
-            if (! $categoria) {
-                return response()->json(['message' => 'Categoría no encontrada'], 404);
-            }
-
-            // Actualizar la categoría
-            $categoria->update($request->only(['v_titulo']));
-
-            return response()->json([
-                'message' => 'Categoría actualizada correctamente',
-                'categoria' => $categoria,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error al actualizar categoría: '.$e->getMessage());
-
-            return response()->json(['message' => 'Error al actualizar la categoría'], 500);
-        }
+        return view('categories.show', compact('categoria'));
     }
 
-    // Eliminar una categoría
-    public function delete($id)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Categoria  $categoria
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Categoria $categoria)
     {
-        try {
-            // Buscar la categoría por su ID
-            $categoria = Categoria::find($id);
-
-            if (! $categoria) {
-                return response()->json(['message' => 'Categoría no encontrada'], 404);
-            }
-
-            // Eliminar la categoría
-            $categoria->delete();
-
-            return response()->json(['message' => 'Categoría eliminada correctamente']);
-        } catch (\Exception $e) {
-            Log::error('Error al eliminar categoría: '.$e->getMessage());
-
-            return response()->json(['message' => 'Error al eliminar la categoría'], 500);
-        }
+        return view('categories.edit', compact('categoria'));
     }
 
-    // Buscar categorías por título
-    public function search($titulo)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Categoria  $categoria
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Categoria $categoria)
     {
-        try {
-            // Buscar categorías que coincidan con el título
-            $categorias = Categoria::where('v_titulo', 'like', "%$titulo%")->get();
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'html_content' => 'nullable|string',
+            // Validate other fields as needed
+        ]);
 
-            if ($categorias->isEmpty()) {
-                return response()->json(['message' => 'No se encontraron categorías'], 404);
-            }
+        $categoria->update($validatedData);
 
-            return response()->json([
-                'message' => 'Categorías encontradas',
-                'categorias' => $categorias,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error al buscar categorías: '.$e->getMessage());
+        return redirect()->route('categories.index')
+            ->with('success', 'Category updated successfully.');
+    }
 
-            return response()->json(['message' => 'Error al buscar las categorías'], 500);
-        }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Categoria  $categoria
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Categoria $categoria)
+    {
+        $categoria->delete();
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Category deleted successfully.');
     }
 }

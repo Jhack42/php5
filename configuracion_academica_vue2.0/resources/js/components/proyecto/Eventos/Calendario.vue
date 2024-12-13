@@ -1,74 +1,105 @@
 <template>
-    <div class="calendar-app">
-        <!-- Header -->
-        <header class="header">
-            <div class="level">
-                <div class="level-left">
-                    <button class="button is-ghost">
-                        <span class="icon">
+<div class="carousel-admin">        <!-- Header -->
+        <header class="cal-header">
+            <div class="cal-header-wrapper">
+                <div class="cal-header-left">
+                    <button class="cal-menu-btn">
+                        <span class="cal-icon">
                             <i class="fas fa-bars"></i>
                         </span>
                     </button>
-                    <h1 class="title is-4 ml-4">{{ selectedMonth }}</h1>
+                    <div class="cal-header-left2">
+                        <img src="../../../../../public/img/calendario.png" alt="Anterior" class="nav-arrow-icon2">
+                        <h1 class="cal-title">Calendario</h1>
+                    </div>
                 </div>
-                <div class="level-right">
-                    <!-- Barra de navegación personalizada -->
-                    <div class="custom-toolbar">
-                        <button @click="prev" class="button">Anterior</button>
-                        <span class="calendar-title">{{ calendarTitle }}</span>
-                        <button @click="next" class="button">Siguiente</button>
-                        <button @click="today" class="button">Hoy</button>
-                        <select @change="changeView($event)">
+
+                <div class="cal-header-right">
+                    <div class="cal-navigation">
+                        <button class="cal-nav-btn cal-nav-today" @click="today">Hoy</button>
+
+                        <button class="cal-nav-btn cal-nav-prev" @click="prev">
+                            <img src="../../../../../public/img/flecha-correcta.png" alt="Anterior"
+                                class="nav-arrow-icon-calendar rotate-180">
+                        </button>
+                        <button class="cal-nav-btn cal-nav-next" @click="next"><img
+                                src="../../../../../public/img/flecha-correcta.png" alt="Anterior"
+                                class="nav-arrow-icon-calendar"></button>
+                        <h1 class="cal-title">{{ selectedMonth }}</h1>
+                    </div>
+                    <div class="cal-navigation">
+                        <select class="cal-view-select" @change="changeView">
                             <option value="dayGridMonth">Mes</option>
                             <option value="timeGridWeek">Semana</option>
                             <option value="timeGridDay">Día</option>
                             <option value="listWeek">Lista</option>
+                            <option value="multiMonthYear">Año</option>
                         </select>
+                    </div>
+                </div>
+                <div class="cal-header-left-derecha">
+                    <button class="cal-menu-btn">
+                        <span class="cal-icon">
+                            <i class="fas fa-bars"></i>
+                        </span>
+                    </button>
+                    <div class="cal-header-left2">
+                        <Apps @change-view="handleViewChange" />
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="main-content">
+        <div class="cal-content">
             <!-- Sidebar -->
-            <aside class="sidebar">
-                <button class="button is-fullwidth is-primary mb-4">
-                    <span class="icon">
+            <aside class="cal-sidebar">
+                <button class="cal-create-btn">
+                    <span class="cal-create-icon">
                         <i class="fas fa-plus"></i>
                     </span>
-                    <span>Crear</span>
+                    <span class="cal-create-text">Crear</span>
                 </button>
 
                 <!-- Mini Calendar -->
-                <div class="mini-calendar">
-                    <div class="header">
-                        {{ miniCalendarMonth }}
-                        <div class="buttons">
-                            <button class="button is-small is-ghost" @click="miniCalendarPreviousMonth">
+                <div class="cal-mini">
+                    <div class="cal-mini-header">
+                        <span class="cal-mini-month">{{ miniCalendarMonth }}</span>
+                        <div class="cal-mini-nav">
+                            <button class="cal-mini-btn cal-mini-prev" @click="miniCalendarPreviousMonth">
                                 <i class="fas fa-chevron-left"></i>
+                                <img src="../../../../../public/img/flecha-correcta.png" alt="Anterior"
+                                    class="nav-arrow-icon rotate-180">
+
                             </button>
-                            <button class="button is-small is-ghost" @click="miniCalendarNextMonth">
+
+
+                            <button class="cal-mini-btn cal-mini-next" @click="miniCalendarNextMonth">
                                 <i class="fas fa-chevron-right"></i>
+                                <img src="../../../../../public/img/flecha-correcta.png" alt="Anterior"
+                                    class="nav-arrow-icon">
+
                             </button>
                         </div>
                     </div>
-                    <div class="days">
-                        <div v-for="day in shortDays" :key="day" class="day-header">
+                    <div class="cal-mini-grid">
+                        <div v-for="day in shortDays" :key="day" class="cal-mini__day-header">
                             {{ day }}
                         </div>
-                        <div v-for="(day, index) in miniCalendarDays" :key="index"
-                            :class="['day', { 'is-today': day.isToday }, { 'is-other-month': day.isOtherMonth }, { 'is-selected': isDateSelected(day.date) }]"
-                            @click="selectDate(day.date, $event)">
+                        <div v-for="(day, index) in miniCalendarDays" :key="index" class="cal-mini__day" :class="{
+                            'cal-mini__day--today': day.isToday,
+                            'cal-mini__day--other-month': day.isOtherMonth,
+                            'cal-mini__day--selected': isDateSelected(day.date)
+                        }" @click="selectDate(day.date, $event)">
                             {{ day.day }}
-                            <span v-if="day.hasEvents" class="event-indicator"></span>
+                            <span v-if="day.hasEvents" class="cal-mini__day-event-indicator"></span>
                         </div>
                     </div>
                 </div>
             </aside>
 
-            <!-- FullCalendar -->
-            <main class="calendar">
-                <FullCalendar :options="calendarOptions" ref="calendar" />
+            <!-- Main Calendar -->
+            <main class="cal-main">
+                <FullCalendar class="cal-fullcalendar" :options="calendarOptions" ref="calendar" />
             </main>
         </div>
     </div>
@@ -80,108 +111,232 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import esLocale from "@fullcalendar/core/locales/es";
+import multiMonthPlugin from "@fullcalendar/multimonth"; // Add this import
+import Apps from './Apps.vue';
+
 
 export default {
+    name: 'Calendar',
     components: {
         FullCalendar,
+        Apps
     },
     data() {
+        const customEsLocale = {
+            ...esLocale,
+            monthNames: [
+                'Enero',
+                'Febrero',
+                'Marzo',
+                'Abril',
+                'Mayo',
+                'Junio',
+                'Julio',
+                'Agosto',
+                'Septiembre',
+                'Octubre',
+                'Noviembre',
+                'Diciembre'
+            ],
+            monthNamesShort: [
+                'Ene',
+                'Feb',
+                'Mar',
+                'Abr',
+                'May',
+                'Jun',
+                'Jul',
+                'Ago',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dic'
+            ]
+        };
+
         return {
             calendarTitle: "",
-            // FullCalendar options
+            selectedMonth: "",
             calendarOptions: {
-                plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
-                initialView: "dayGridMonth",
-                locale: esLocale, // Idioma español
-                headerToolbar: false, // Desactiva la barra predeterminada
-                events: [
-                    //-----------------Hasta-------------------------
-                    //--febrero
-                    { title: "Presemtacion de Solicitud por traslado Interno", start: "2024-02-05", color: "#007bff", editable: true },
-                    { title: "Examen de Admisión Ordinario Presencial / Traslado externo / Otras modalidades", start: "2024-02-12", end: "2024-02-16", color: "#6610f2", editable: true },
-                    { title: "txt", start: "2024-02-22", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-02-22", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-02-23", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-02-25", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-02-26", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-02-29", color: "#007bff", editable: true },
-                    //--Marzo
-                    { title: "txt", start: "2024-03-01", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-01", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-03", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-05", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-05", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-05", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-06", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-08", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-08", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-10", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-11", end: "2024-03-15", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-18", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-18", end : "2024-03-22", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-03-18", end : "2024-03-22", color: "#007bff", editable: true },
-
-                    //-- Abril
-                    { title: "txt", start: "2024-04-12", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-04-15", end: "2024-04-19", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-04-29", end: "2024-05-03", color: "#007bff", editable: true },
-
-                    //-- Mayo
-                    { title: "txt", start: "2024-05-06", end : "2024-05-10", color: "#007bff", editable: true },
-
-                    //-- Junio
-                    { title: "txt", start: "2024-06-24", end : "2024-06-28", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-06-24", end : "2024-06-28", color: "#007bff", editable: true },
-
-                    //-- Julio
-                    { title: "txt", start: "2024-07-01", end : "2024-07-05", color: "#007bff", editable: true },
-                    { title: "txt", start: "2024-07-15", end : "2024-07-19", color: "#007bff", editable: true},
-
-
-
-
+                plugins: [
+                    dayGridPlugin,
+                    timeGridPlugin,
+                    listPlugin,
+                    multiMonthPlugin,
                 ],
-                height: "auto",
-                contentHeight: "auto",
-                aspectRatio: 1.5,
+                initialView: "dayGridMonth",
+                locale: customEsLocale,
+                headerToolbar: false,
+                height: '100%',
+                handleWindowResize: true,
                 editable: true,
+                weekends: true,
+                firstDay: 1, // Semana empieza en Lunes
+                selectable: true,
+                selectMirror: true,
+                dayMaxEvents: true,
+
+                events: [
+                    {
+                        title: "Presemtacion de Solicitud por traslado Interno",
+                        start: "2024-02-05",
+                        color: "#007bff",
+                        editable: true
+                    },
+                    {
+                        title: "Examen de Admisión Ordinario Presencial / Traslado externo / Otras modalidades",
+                        start: "2024-02-12",
+                        end: "2024-02-16",
+                        color: "#6610f2",
+                        editable: true
+                    }
+                ],
+
+                datesSet: function (info) {
+                    this.updateCalendarTitle();
+                    this.updateSelectedMonth();
+                }.bind(this),
+
+                views: {
+                    dayGridMonth: {
+                        titleFormat: { year: 'numeric', month: 'long' },
+                        dayHeaderFormat: { weekday: 'short' },
+                        displayEventTime: false,
+                        dayMaxEvents: true,
+                        showNonCurrentDates: true,
+                        fixedWeekCount: false
+                    },
+
+                    timeGridWeek: {
+                        titleFormat: { year: 'numeric', month: 'long', day: '2-digit' },
+                        slotMinTime: '07:00:00',
+                        slotMaxTime: '20:00:00',
+                        expandRows: true,
+                        slotDuration: '00:30:00',
+                        slotLabelInterval: '01:00',
+                        allDaySlot: true,
+                        allDayText: 'Todo el día',
+                        dayHeaderFormat: { weekday: 'long', day: 'numeric' }
+                    },
+
+                    timeGridDay: {
+                        titleFormat: { year: 'numeric', month: 'long', day: '2-digit' },
+                        slotMinTime: '07:00:00',
+                        slotMaxTime: '20:00:00',
+                        expandRows: true,
+                        slotDuration: '00:30:00',
+                        slotLabelInterval: '01:00',
+                        allDaySlot: true,
+                        allDayText: 'Todo el día'
+                    },
+
+                    multiMonthYear: {
+                        type: 'multiMonth',
+                        duration: { months: 12 },
+                        multiMonthMaxColumns: 4,
+                        multiMonthMinWidth: 250,
+                        titleFormat: { year: 'numeric' },
+                        dayMaxEvents: 2,
+                        showNonCurrentDates: true,
+                        format: {
+                            month: 'long',
+                            year: 'numeric'
+                        },
+                        fixedWeekCount: true,
+                        showMonthBeforeYear: true,
+                        multiMonthTitleFormat: {
+                            month: 'long'
+                        },
+                        buttonText: 'Año',
+                        eventDisplay: 'block',
+                        eventMaxStack: 1,
+                        monthFormat: { month: 'long' }  // Agregar esta línea
+                    },
+
+                    listWeek: {
+                        titleFormat: { year: 'numeric', month: 'long' },
+                        noEventsText: 'No hay eventos para mostrar',
+                        allDayText: 'Todo el día',
+                        listDayFormat: { weekday: 'long', day: 'numeric', month: 'long' },
+                        listDaySideFormat: false
+                    }
+                }
             },
-            // Mini Calendar Data
+
             shortDays: ["D", "L", "M", "X", "J", "V", "S"],
             miniCalendarDays: [],
             miniCalendarMonth: "",
             currentDate: new Date(),
+            miniCalendarDate: new Date(),
             selectedDates: [],
         };
     },
     mounted() {
-        this.updateCalendarTitle();
-        this.generateMiniCalendar(this.currentDate);
+        this.initializeCalendar();
     },
     methods: {
-        // Barra personalizada
+
+
+        handleViewChange(viewName) {
+            this.$emit('change-view', viewName);
+        },
+
+
+        initializeCalendar() {
+            this.$nextTick(() => {
+                this.updateCalendarTitle();
+                this.updateSelectedMonth();
+                this.generateMiniCalendar(this.miniCalendarDate);
+            });
+        },
         prev() {
-            this.$refs.calendar.getApi().prev();
+            const calendarApi = this.$refs.calendar.getApi();
+            calendarApi.prev();
+            this.currentDate = calendarApi.getDate();
             this.updateCalendarTitle();
+            this.updateSelectedMonth();
         },
         next() {
-            this.$refs.calendar.getApi().next();
+            const calendarApi = this.$refs.calendar.getApi();
+            calendarApi.next();
+            this.currentDate = calendarApi.getDate();
             this.updateCalendarTitle();
+            this.updateSelectedMonth();
         },
         today() {
-            this.$refs.calendar.getApi().today();
+            const calendarApi = this.$refs.calendar.getApi();
+            calendarApi.today();
+            this.currentDate = new Date();
+            this.miniCalendarDate = new Date();
             this.updateCalendarTitle();
+            this.updateSelectedMonth();
+            this.generateMiniCalendar(this.miniCalendarDate);
         },
         changeView(event) {
             const view = event.target.value;
-            this.$refs.calendar.getApi().changeView(view);
+            const calendarApi = this.$refs.calendar.getApi();
+
+
+
+            calendarApi.changeView(view);
             this.updateCalendarTitle();
+            this.updateSelectedMonth();
         },
         updateCalendarTitle() {
-            this.calendarTitle = this.$refs.calendar.getApi().view.title;
+            if (this.$refs.calendar) {
+                this.calendarTitle = this.$refs.calendar.getApi().view.title;
+            }
         },
-
-        // Mini calendario
+        updateSelectedMonth() {
+            if (this.$refs.calendar) {
+                const date = this.$refs.calendar.getApi().getDate();
+                this.selectedMonth = date.toLocaleDateString('es-ES', {
+                    month: 'long',
+                    year: 'numeric'
+                }).replace(/^\w/, (c) => c.toUpperCase()); // Capitaliza la primera letra
+                this.currentDate = date;
+            }
+        },
         generateMiniCalendar(date) {
             const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
             const startOfWeek = new Date(
@@ -190,7 +345,7 @@ export default {
             this.miniCalendarMonth = date.toLocaleDateString("es-ES", {
                 month: "long",
                 year: "numeric",
-            });
+            }).replace(/^\w/, (c) => c.toUpperCase());
 
             this.miniCalendarDays = Array.from({ length: 42 }, (_, index) => {
                 const dayDate = new Date(startOfWeek);
@@ -198,10 +353,8 @@ export default {
 
                 const hasEvents = this.calendarOptions.events.some((event) => {
                     const eventStart = new Date(event.start);
-                    return (
-                        eventStart.toDateString() === dayDate.toDateString() ||
-                        (event.end && new Date(event.end) >= dayDate && eventStart <= dayDate)
-                    );
+                    const eventEnd = event.end ? new Date(event.end) : new Date(eventStart);
+                    return dayDate >= eventStart && dayDate <= eventEnd;
                 });
 
                 return {
@@ -215,20 +368,20 @@ export default {
         },
         miniCalendarPreviousMonth() {
             const newDate = new Date(
-                this.currentDate.getFullYear(),
-                this.currentDate.getMonth() - 1,
+                this.miniCalendarDate.getFullYear(),
+                this.miniCalendarDate.getMonth() - 1,
                 1
             );
-            this.currentDate = newDate;
+            this.miniCalendarDate = newDate;
             this.generateMiniCalendar(newDate);
         },
         miniCalendarNextMonth() {
             const newDate = new Date(
-                this.currentDate.getFullYear(),
-                this.currentDate.getMonth() + 1,
+                this.miniCalendarDate.getFullYear(),
+                this.miniCalendarDate.getMonth() + 1,
                 1
             );
-            this.currentDate = newDate;
+            this.miniCalendarDate = newDate;
             this.generateMiniCalendar(newDate);
         },
         selectDate(date, event) {
@@ -238,6 +391,8 @@ export default {
                 this.selectedDates = [date];
             }
             this.updateFullCalendarView();
+            this.miniCalendarDate = new Date(date);
+            this.generateMiniCalendar(this.miniCalendarDate);
         },
         isDateSelected(date) {
             return this.selectedDates.some(
@@ -248,11 +403,16 @@ export default {
             const fullCalendarApi = this.$refs.calendar.getApi();
             if (this.selectedDates.length === 1) {
                 fullCalendarApi.gotoDate(this.selectedDates[0]);
+                this.currentDate = this.selectedDates[0];
+                this.updateCalendarTitle();
+                this.updateSelectedMonth();
             } else if (this.selectedDates.length > 1) {
                 const startDate = this.selectedDates[0];
-                const endDate = this.selectedDates[this.selectedDates.length - 1];
                 fullCalendarApi.changeView("timeGridWeek", startDate);
                 fullCalendarApi.gotoDate(startDate);
+                this.currentDate = startDate;
+                this.updateCalendarTitle();
+                this.updateSelectedMonth();
             }
         },
     },

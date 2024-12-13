@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #chart {
+      max-width: 800px;
+      margin: 35px auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script>
+    const options = {
+      series: [
+        {
+          name: "United States",
+          data: [1, 1, 1, 1, 1, 1]
+        },
+        {
+          name: "India",
+          data: [2, 2, 3, 2, 2, 2]
+        },
+        {
+          name: "China",
+          data: [3, 3, 2, 3, 3, 3]
+        },
+        {
+          name: "Brazil",
+          data: [4, 5, 4, 4, 4, 4]
+        },
+        {
+          name: "United Kingdom",
+          data: [5, 4, 5, 5, 5, 5]
+        },
+        {
+          name: "Russia",
+          data: [6, 6, 6, 6, 6, 6]
+        },
+        {
+          name: "Germany",
+          data: [7, 7, 7, 7, 7, 7]
+        },
+        {
+          name: "Indonesia",
+          data: [8, 8, 8, 8, 8, 8]
+        },
+        {
+          name: "Japan",
+          data: [9, 9, 9, 9, 9, 9]
+        },
+        {
+          name: "Canada",
+          data: [10, 10, 10, 10, 10, 10]
+        }
+      ],
+      chart: {
+        height: 400,
+        type: 'line',
+        zoom: {
+          enabled: false
+        },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800
+        },
+        background: '#1a1a1a'
+      },
+      colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a', '#D10CE8', '#FF9800', '#6B8E23'],
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        width: 3,
+        curve: 'straight'
+      },
+      title: {
+        text: 'Country Rankings',
+        align: 'center',
+        style: {
+          color: '#fff'
+        }
+      },
+      grid: {
+        borderColor: '#40475D',
+        xaxis: {
+          lines: {
+            show: true
+          }
+        },
+        yaxis: {
+          lines: {
+            show: true
+          }
+        }
+      },
+      xaxis: {
+        categories: ['2019', '2020', '2021', '2022', '2023', '2024'],
+        labels: {
+          style: {
+            colors: '#fff'
+          }
+        }
+      },
+      yaxis: {
+        reversed: true,
+        tickAmount: 10,
+        min: 1,
+        max: 10,
+        labels: {
+          style: {
+            colors: '#fff'
+          }
+        }
+      },
+      legend: {
+        position: 'right',
+        offsetY: 40,
+        labels: {
+          colors: '#fff'
+        }
+      },
+      tooltip: {
+        theme: 'dark',
+        y: {
+          formatter: function(val) {
+            return "Rank: " + val
+          }
+        }
+      }
+    };
+
+    const chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hola Mundo Expandido</title>
+    <style>
+        .hola-mundo {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .hola-mundo__container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .hola-mundo__title {
+            color: #2c3e50;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hola-mundo__image {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hola-mundo__video {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hola-mundo__footer {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body class="hola-mundo">
+    <div class="hola-mundo__container">
+        <h1 class="hola-mundo__title">Hola Mundo</h1>
+    </div>
+    <img src="https://images.homify.com/image/upload/a_0/v1440015283/p/photo/image/832767/JLF_6309.jpg"
+         alt="Imagen decorativa"
+         class="hola-mundo__image">
+    <div class="hola-mundo__video">
+        <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/6nTKhJOtegw?si=gqrlBuHn-PcdwFi_"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+        </iframe>
+    </div>
+    <div class="hola-mundo__footer">
+        Creado por un desarrollador apasionado. 💻
+    </div>
+</body>
+</html>

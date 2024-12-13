@@ -1,18 +1,18 @@
 <template>
     <div class="home">
-      <h1>Home Page</h1>
-      <p>Welcome to the home page!</p>
+        <h1>Home Page</h1>
+        <p>Welcome to the home page!</p>
     </div>
-  </template>
+</template>
 
-  <script>
-  export default {
+<script>
+export default {
     name: 'Home',
-  };
-  </script>
+};
+</script>
 
-  <style>
-  .home {
+<style>
+.home {
     padding: 20px;
-  }
-  </style>
+}
+</style>

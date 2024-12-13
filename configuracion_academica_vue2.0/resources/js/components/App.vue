@@ -1,18 +1,13 @@
 <template>
+    <theme-detector>
     <div>
-        <!-- Renderizar el componente -->
-        <Calendario />
+        <router-view></router-view>
     </div>
+</theme-detector>
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue';
-
 export default {
-    components: {
-        Calendario: defineAsyncComponent(() =>
-            import('./siderar/App.vue')
-        ),
-    },
-};
+    name: 'App'
+}
 </script>

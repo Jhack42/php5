@@ -1,0 +1,653 @@
+// Theme variables
+:root {
+    // Light theme variables
+    --background-color: #ffffff;
+    --text-color: #4a4a4a;
+    --border-color: #e0e0e0;
+    --hover-color: #f5f5f5;
+    --primary-color: #1a73e8;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --secondary-text: #999;
+    --card-background: #ffffff;
+    --event-bg: #1a73e8;
+    --event-text: #ffffff;
+}
+
+:root.dark {
+    // Dark theme variables
+    --background-color: #1a1a1a;
+    --text-color: #ffffff;
+    --border-color: #333333;
+    --hover-color: #2d2d2d;
+    --primary-color: #4d9fff;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --secondary-text: #888;
+    --card-background: #2d2d2d;
+    --event-bg: #4d9fff;
+    --event-text: #ffffff;
+    .cal-year-view {
+        .fc-multimonth-month {
+            background-color: var(--card-background);
+
+            .fc-multimonth-header {
+                background-color: var(--card-background);
+            }
+        }
+    }
+}
+
+.cal-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; // Asegura que ocupe toda la altura de la ventana
+    width: 100vw; // Asegura que ocupe todo el ancho de la ventana
+    overflow: hidden; // Previene scroll indeseado
+}
+
+.cal-header {
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--card-background);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.cal-header-wrapper {
+    display: flex;
+    justify-content: space-between; // Esto distribuirá los elementos
+    align-items: center;
+    width: 100%; // Asegura que ocupe todo el ancho disponible
+}
+
+.cal-header-left {
+    // Se mantendrá a la izquierda por defecto en un flex container
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 25px 0 0; // top right bottom left
+}
+
+.cal-header-left-derecha {
+    // Se mantendrá a la derecha
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto; // Esto empujará el elemento hacia la derecha
+}
+
+.cal-menu-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    color: var(--text-color);
+
+    &:hover {
+        background-color: var(--hover-color);
+    }
+}
+
+.cal-title {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+.cal-header-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; // Esto separará los elementos
+    gap: 16px;
+}
+
+.cal-navigation {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cal-nav-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+        background-color 0.2s,
+        color 0.2s;
+
+    &:hover {
+        background-color: var(--hover-color);
+    }
+}
+
+.cal-nav-today {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.cal-view-select {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    cursor: pointer;
+
+    option {
+        background-color: var(--card-background);
+        color: var(--text-color);
+    }
+}
+
+.cal-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+
+.cal-header-left2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .cal-title {
+        margin: 0; // Elimina cualquier margen por defecto del h1
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--text-color);
+        line-height: 1; // Ajusta la altura de línea
+    }
+
+    .nav-arrow-icon2 {
+        width: 25px;
+        height: 25px;
+        object-fit: contain;
+        display: block; // Asegura que la imagen se comporte como bloque
+    }
+
+    .app-launcher-icon {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 3px;
+        width: 20px;
+        height: 20px;
+        padding: 2px;
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--text-color); // Usará el color del tema
+
+            &:hover {
+                transform: scale(1.2);
+                transition: transform 0.2s ease;
+            }
+        }
+    }
+}
+
+.nav-arrow-icon {
+    width: 15px; // Ajusta según el tamaño que necesites
+    height: 15px; // Ajusta según el tamaño que necesites
+    object-fit: contain;
+}
+
+.nav-arrow-icon-calendar {
+    width: 20px; // Ajusta según el tamaño que necesites
+    height: 20px; // Ajusta según el tamaño que necesites
+    object-fit: contain;
+}
+
+.rotate-180 {
+    transform: rotate(180deg); // Para que apunte hacia la izquierda
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .chevron-icon {
+        width: 15px;
+        height: 15px;
+        color: var(--text-color); // Usa el color del tema
+        transition: color 0.2s;
+    }
+}
+
+.cal-sidebar {
+    width: 270px;
+    padding: 18px;
+    border-right: 1px solid var(--border-color);
+    background-color: var(--card-background);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.cal-create-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px var(--shadow-color);
+    transition: box-shadow 0.2s;
+
+    &:hover {
+        box-shadow: 0 2px 4px var(--shadow-color);
+    }
+}
+
+.cal-create-text {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.cal-mini {
+    background-color: var(--card-background);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.cal-mini-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+}
+
+.cal-mini-month {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.cal-mini-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.cal-mini-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 50%;
+    color: var(--text-color);
+
+    &:hover {
+        background-color: var(--hover-color);
+    }
+}
+
+.cal-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    padding: 8px;
+}
+
+.cal-mini__day-header {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-color);
+    padding: 4px;
+}
+
+.cal-mini__day {
+    position: relative;
+    text-align: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--text-color);
+
+    &:hover {
+        background-color: var(--hover-color);
+    }
+
+    &--today {
+        color: var(--primary-color);
+        font-weight: 500;
+    }
+
+    &--other-month {
+        color: var(--secondary-text);
+    }
+
+    &--selected {
+        background-color: var(--primary-color);
+        color: #ffffff;
+
+        &:hover {
+            background-color: var(--primary-color);
+            filter: brightness(90%);
+        }
+    }
+}
+
+.cal-mini__day-event-indicator {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+.cal-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--background-color);
+    padding: 16px;
+
+    .cal-fullcalendar {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+
+        // Common calendar container styles
+        .fc {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+
+            // Common view styles
+            .fc-view-harness {
+                flex: 1 !important;
+                min-height: 0 !important;
+            }
+
+            // Common event styles
+            .fc-event {
+                background-color: var(--event-bg);
+                border: none;
+                border-radius: 4px;
+                padding: 2px 6px;
+                margin: 1px 2px;
+                cursor: pointer;
+
+                &:hover {
+                    filter: brightness(90%);
+                }
+            }
+
+            // Today highlight
+            .fc-day-today {
+                background-color: var(--hover-color) !important;
+            }
+
+            // Month View Styles
+            &.fc-view-dayGridMonth {
+                .fc-daygrid-body {
+                    height: 100% !important;
+
+                    .fc-daygrid-day {
+                        min-height: 120px;
+                        height: auto !important;
+                        padding: 8px;
+
+                        &:hover {
+                            background-color: var(--hover-color);
+                        }
+
+                        .fc-daygrid-day-top {
+                            padding: 4px;
+                        }
+
+                        .fc-daygrid-day-events {
+                            margin: 4px 0;
+                        }
+
+                        .fc-daygrid-more-link {
+                            margin-top: 4px;
+                            color: var(--primary-color);
+                        }
+                    }
+                }
+            }
+
+            // Week View Styles
+            &.fc-view-timeGridWeek {
+                .fc-timegrid {
+                    height: 100%;
+
+                    .fc-timegrid-body {
+                        height: 100% !important;
+                    }
+
+                    .fc-timegrid-slot {
+                        height: 40px !important;
+                        padding: 2px;
+                    }
+
+                    .fc-timegrid-event {
+                        margin: 1px 0;
+                        border-radius: 3px;
+                    }
+                }
+            }
+
+            // Day View Styles
+            &.fc-view-timeGridDay {
+                .fc-timegrid {
+                    .fc-timegrid-slot {
+                        height: 45px !important;
+                        padding: 4px;
+                    }
+
+                    .fc-timegrid-event {
+                        margin: 2px 0;
+                        padding: 4px;
+                    }
+                }
+            }
+
+            // List View Styles
+            &.fc-view-listWeek {
+                .fc-list {
+                    height: 100%;
+
+                    .fc-list-event {
+                        padding: 8px 14px;
+                        cursor: pointer;
+                        transition: background-color 0.2s;
+
+                        &:hover {
+                            background-color: var(--hover-color);
+                        }
+
+                        .fc-list-event-time {
+                            font-weight: 500;
+                            width: 130px;
+                        }
+
+                        .fc-list-event-title {
+                            font-weight: normal;
+                        }
+                    }
+
+                    .fc-list-empty {
+                        padding: 40px;
+                        text-align: center;
+                        color: var(--secondary-text);
+                    }
+                }
+            }
+
+            // Year View (Multi-Month) Styles
+            // Year View (Multi-Month) Styles
+            &.fc-view-multiMonthYear {
+                overflow-y: auto !important; // Habilitar scroll vertical
+
+                .fc-multimonth-view {
+                    height: auto !important;
+                    min-height: 100%;
+                    padding: 16px;
+                    overflow-y: visible; // Permitir que el contenido se extienda
+
+                    // Estilizar la barra de scroll
+                    &::-webkit-scrollbar {
+                        width: 8px;
+                    }
+
+                    &::-webkit-scrollbar-track {
+                        background: var(--background-color);
+                        border-radius: 4px;
+                    }
+
+                    &::-webkit-scrollbar-thumb {
+                        background: var(--border-color);
+                        border-radius: 4px;
+
+                        &:hover {
+                            background: var(--secondary-text);
+                        }
+                    }
+
+                    .fc-multimonth {
+                        display: grid !important;
+                        grid-template-columns: repeat(4, 1fr);
+                        gap: 20px;
+                        padding: 10px;
+
+                        .fc-multimonth-month {
+                            // Estilos existentes del mes
+                            background: var(--card-background);
+                            border: 1px solid var(--border-color);
+                            border-radius: 8px;
+                            overflow: hidden;
+
+                            // Configuración del layout para números de semana
+                            .fc-multimonth-daygrid {
+                                .fc-daygrid-body {
+                                    width: 100% !important;
+
+                                    table {
+                                        width: 100% !important;
+
+                                        // Columna de números de semana
+                                        .fc-daygrid-week-number {
+                                            background-color: var(--hover-color);
+                                            border-right: 1px solid var(--border-color);
+                                            color: var(--secondary-text);
+                                            font-size: 0.75rem;
+                                            font-weight: 500;
+                                            min-width: 2rem;
+                                            padding: 2px 4px;
+                                            text-align: center;
+                                        }
+                                    }
+                                }
+
+                                // Ajustes para la cabecera
+                                .fc-daygrid-header-row {
+                                    th {
+                                        &.fc-day-header {
+                                            padding: 8px 4px;
+                                            font-weight: 500;
+                                            font-size: 12px;
+                                            color: var(--secondary-text);
+                                        }
+                                    }
+                                }
+
+                                // Ajustes para las celdas de días
+                                .fc-daygrid-day {
+                                    min-height: 35px;
+                                    height: 35px;
+                                    padding: 4px;
+
+                                    &.fc-day-today {
+                                        background-color: var(--hover-color) !important;
+                                    }
+
+                                    .fc-daygrid-day-number {
+                                        font-size: 12px;
+                                        padding: 2px 4px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Ajuste específico para el tema oscuro
+:root.dark {
+    .fc-daygrid-week-number {
+        background-color: var(--hover-color) !important;
+        color: var(--text-color) !important;
+    }
+}
+
+// Media queries actualizados para mantener la responsividad
+@media screen and (max-width: 1400px) {
+    .cal-main .cal-fullcalendar .fc.fc-view-multiMonthYear .fc-multimonth {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .cal-main .cal-fullcalendar .fc.fc-view-multiMonthYear .fc-multimonth {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cal-main .cal-fullcalendar .fc.fc-view-multiMonthYear .fc-multimonth {
+        grid-template-columns: 1fr;
+    }
+}
+
+// Dark theme overrides
+:root.dark {
+    .fc {
+        --fc-page-bg-color: var(--card-background);
+        --fc-neutral-bg-color: var(--card-background);
+        --fc-border-color: var(--border-color);
+        --fc-event-bg-color: var(--event-bg);
+        --fc-event-border-color: var(--event-bg);
+        --fc-event-text-color: var(--event-text);
+        --fc-today-bg-color: var(--hover-color);
+        --fc-list-event-hover-bg-color: var(--hover-color);
+    }
+
+    .fc-multimonth-month {
+        background-color: var(--card-background) !important;
+
+        .fc-multimonth-header {
+            background-color: var(--card-background) !important;
+        }
+    }
+}

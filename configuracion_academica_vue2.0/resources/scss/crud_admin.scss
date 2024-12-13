@@ -1,0 +1,472 @@
+// Variables
+:root {
+    // Light theme (default)
+    --ca-primary: #3b82f6;
+    --ca-success: #22c55e;
+    --ca-danger: #ef4444;
+    --ca-warning: #eab308;
+
+    --ca-bg-1: #ffffff;
+    --ca-bg-2: #f3f4f6;
+    --ca-bg-3: #e5e7eb;
+
+    --ca-txt-1: #111827;
+    --ca-txt-2: #4b5563;
+    --ca-txt-3: #6b7280;
+
+    --ca-border: #e5e7eb;
+    --ca-shadow: rgba(0, 0, 0, 0.1);
+  }
+
+  // Dark theme
+  :root.dark {
+    --ca-bg-1: #111827;
+    --ca-bg-2: #1f2937;
+    --ca-bg-3: #374151;
+
+    --ca-txt-1: #f9fafb;
+    --ca-txt-2: #e5e7eb;
+    --ca-txt-3: #d1d5db;
+
+    --ca-border: #374151;
+    --ca-shadow: rgba(0, 0, 0, 0.3);
+  }
+
+  // Main Container
+  .ca {
+    background-color: var(--ca-bg-1);
+    color: var(--ca-txt-1);
+    min-height: 100vh;
+  }
+
+  // Header
+  .ca-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--ca-border);
+    background-color: var(--ca-bg-2);
+  }
+
+  .ca-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--ca-txt-1);
+  }
+
+  .ca-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  // Buttons
+  .ca-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.2s;
+
+    &--preview {
+      background-color: var(--ca-primary);
+      color: white;
+
+      &:hover {
+        filter: brightness(110%);
+      }
+    }
+
+    &--create {
+      background-color: var(--ca-success);
+      color: white;
+
+      &:hover {
+        filter: brightness(110%);
+      }
+    }
+  }
+
+  // Table Styles
+  .ca-table-wrap {
+    overflow-x: auto;
+    padding: 1rem;
+  }
+
+  .ca-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .ca-th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background-color: var(--ca-bg-2);
+    color: var(--ca-txt-2);
+    border-bottom: 2px solid var(--ca-border);
+  }
+
+  .ca-td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--ca-border);
+
+    &--desc {
+      max-width: 20rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .ca-tr {
+    &:hover {
+      background-color: var(--ca-bg-2);
+    }
+  }
+
+  // Status Button
+  .ca-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+
+    &--active {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: rgb(21, 128, 61);
+    }
+
+    &--inactive {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: rgb(185, 28, 28);
+    }
+  }
+
+  // Preview Panel
+  .ca-preview {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background-color: var(--ca-bg-1);
+    border-left: 1px solid var(--ca-border);
+    box-shadow: -4px 0 15px var(--ca-shadow);
+
+    &__header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--ca-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &__tab {
+      padding: 0.5rem 1rem;
+      color: var(--ca-txt-2);
+
+      &--active {
+        color: var(--ca-primary);
+        border-bottom: 2px solid var(--ca-primary);
+      }
+    }
+
+    &__code {
+      background-color: var(--ca-bg-2);
+      padding: 1rem;
+      border-radius: 0.375rem;
+      overflow: auto;
+    }
+  }
+
+  // Modal
+  .ca-modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+
+    &--full {
+      background-color: var(--ca-bg-1);
+    }
+
+    &__box {
+      background-color: var(--ca-bg-1);
+      border-radius: 0.5rem;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px var(--ca-shadow);
+    }
+
+    &__close {
+      font-size: 1.5rem;
+      color: var(--ca-txt-2);
+
+      &--light {
+        color: white;
+      }
+    }
+  }
+
+  // Form
+  .ca-form {
+    padding: 1rem;
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    &__group {
+      &--full {
+        grid-column: span 2;
+      }
+    }
+
+    &__label {
+      display: block;
+      color: var(--ca-txt-2);
+      margin-bottom: 0.5rem;
+    }
+
+    &__input,
+    &__select,
+    &__textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--ca-border);
+      border-radius: 0.375rem;
+      background-color: var(--ca-bg-1);
+      color: var(--ca-txt-1);
+
+      &:focus {
+        outline: 2px solid var(--ca-primary);
+        outline-offset: -2px;
+      }
+    }
+
+    &__textarea--code {
+      font-family: monospace;
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .ca-main {
+      &--preview {
+        margin-right: 0;
+      }
+    }
+
+    .ca-preview {
+      width: 100%;
+    }
+
+    .ca-form {
+      &__grid {
+        grid-template-columns: 1fr;
+      }
+
+      &__group--full {
+        grid-column: span 1;
+      }
+    }
+  }
+  .toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    min-width: 300px;
+    max-width: 400px;
+    padding: 16px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    animation: slideIn 0.3s ease-out;
+    cursor: pointer;
+    border-left: 4px solid #666;
+}
+
+.toast--success {
+    border-left-color: #4caf50;
+}
+
+.toast--error {
+    border-left-color: #f44336;
+}
+
+.toast--warning {
+    border-left-color: #ff9800;
+}
+
+.toast__content {
+    flex: 1;
+}
+
+.toast__title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.toast__message {
+    font-size: 0.9em;
+    color: #666;
+    white-space: pre-line;
+}
+
+.toast__close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #999;
+    cursor: pointer;
+    padding: 4px;
+    margin: -4px;
+}
+
+.toast__close:hover {
+    color: #666;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+.ca-tr--editing {
+    animation: editingPulse 2s infinite;
+}
+
+.ca-tr--just-updated {
+    animation: updateFade 3s forwards;
+}
+
+@keyframes editingPulse {
+    0% {
+        background-color: rgba(255, 193, 7, 0);
+    }
+    50% {
+        background-color: rgba(255, 193, 7, 0.2);
+    }
+    100% {
+        background-color: rgba(255, 193, 7, 0);
+    }
+}
+
+@keyframes updateFade {
+    0% {
+        background-color: rgba(40, 167, 69, 0.3);
+    }
+    100% {
+        background-color: rgba(40, 167, 69, 0);
+    }
+}
+
+
+
+.ca-preview__content-wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  overflow: auto;
+  /*
+  background: #fff;
+  */
+}
+
+.ca-preview__html-content {
+  /* Estos estilos se heredarán al contenido renderizado */
+  width: 100%;
+  margin: 0 auto;
+  /* Aseguramos que los estilos base se apliquen */
+  font-family: inherit;
+  line-height: 1.5;
+  color: inherit;
+}
+
+/* Estilos para mantener la consistencia de elementos comunes */
+.ca-preview__html-content div {
+  max-width: 100%;
+}
+
+.ca-preview__html-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Aseguramos que los contenedores centrados funcionen */
+.ca-preview__html-content .container,
+.ca-preview__html-content [class*="container"] {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Mantenemos las clases de alineación comunes */
+.ca-preview__html-content .text-center {
+  text-align: center;
+}
+
+.ca-preview__html-content .mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
+
+
+
+
+.ca-preview__render {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 300px;  // Puedes ajustar esto según tus necesidades
+
+    .ca-preview__content-wrapper {
+        width: 100%;
+        max-width: 1200px;  // Puedes ajustar este valor según tus necesidades
+        margin: 0 auto;
+        padding: 20px;
+
+        .ca-preview__html-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            // Asegura que todos los elementos internos directos estén centrados
+            > * {
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+        }
+    }
+}
