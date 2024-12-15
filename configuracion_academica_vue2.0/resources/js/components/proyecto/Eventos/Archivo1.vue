@@ -8,6 +8,9 @@
       <h2>Contenido del Archivo 1</h2>
       <!-- Tu contenido aquí -->
     </div>
+    <div class="bg-blue-500 text-white p-4">
+    Si este texto aparece con fondo azul y padding, Tailwind está funcionando
+</div>
   </div>
 </template>
 

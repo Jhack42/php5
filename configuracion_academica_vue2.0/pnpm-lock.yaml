@@ -109,13 +109,13 @@ importers:
         specifier: ^1.0
         version: 1.0.6(vite@6.0.1(@types/node@22.10.1)(jiti@1.21.6)(sass-embedded@1.81.0)(yaml@2.6.1))
       postcss:
-        specifier: ^8.4.47
+        specifier: ^8.4.49
         version: 8.4.49
       sass-embedded:
         specifier: ^1.81.0
         version: 1.81.0
       tailwindcss:
-        specifier: ^3.4.13
+        specifier: ^3.4.15
         version: 3.4.15
       vite:
         specifier: ^6.0.1

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <style>
     #chart {
@@ -8,6 +9,7 @@
     }
   </style>
 </head>
+
 <body>
   <div id="chart"></div>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -16,7 +18,7 @@
       series: [
         {
           name: "United States",
-          data: [1, 1, 1, 1, 1, 1]
+          data: [10, 8, 6, 4, 2, 1]
         },
         {
           name: "India",
@@ -125,7 +127,7 @@
       tooltip: {
         theme: 'dark',
         y: {
-          formatter: function(val) {
+          formatter: function (val) {
             return "Rank: " + val
           }
         }
@@ -136,4 +138,5 @@
     chart.render();
   </script>
 </body>
+
 </html>
